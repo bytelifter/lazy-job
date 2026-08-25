@@ -115,6 +115,7 @@ class JobMatcher:
         # Automatable / Delegation configuration
         self._auto_indicators: dict[str, Any] = config.get("automatable_indicators", {})
         self._manual_penalties: dict[str, Any] = config.get("manual_work_penalties", {})
+        self._allow_all_remote: bool = config.get("allow_all_remote_positions", True)
 
     def process(
         self,
@@ -316,13 +317,23 @@ class JobMatcher:
                 continue
 
             # Check 2: keyword nella descrizione e titolo
-            searchable = f"{offer.title} {offer.description[:3000]}".lower()
+            searchable = f"{offer.title} {offer.description[:3000]} {offer.location}".lower()
             keyword_match = any(
                 kw in searchable for kw in self._contractor_kw
             )
 
             if keyword_match:
                 result.append(offer)
+                continue
+
+            # Check 3: Se abilitato allow_all_remote, include qualsiasi offerta remota/online per proporre candidatura contractor
+            if self._allow_all_remote:
+                if any(w in searchable for w in ("remote", "telecommute", "anywhere", "work from home", "smart working")):
+                    result.append(offer)
+                    continue
+                if offer.source in ("Indeed", "Linkedin", "Jobspy", "Remotive", "Himalayas", "WWR RSS"):
+                    result.append(offer)
+                    continue
 
         return result
 
@@ -363,11 +374,20 @@ class JobMatcher:
                     if re.search(pattern, searchable):
                         matched.append(skill)
 
-            if user_skills_lower:
-                skill_ratio = len(matched) / len(user_skills_lower)
+            if matched:
+                # Realistic skill matching: 1 skill=25pts, 2 skills=39pts, 3 skills=51pts, 4+ skills=60pts
+                skill_score = min(60, 15 + len(matched) * 12)
             else:
-                skill_ratio = 0.0
-            skill_score = int(skill_ratio * 60)
+                skill_score = 0
+
+            # Title keyword boost: If title explicitly mentions core skills/role (Python, Backend, Data, etc.)
+            title_lower = offer.title.lower()
+            title_matches = [
+                s for s in user_skills_lower
+                if (" " in s and s in title_lower) or (len(s) > 2 and re.search(rf"\b{re.escape(s)}\b", title_lower))
+            ]
+            if title_matches:
+                skill_score = max(skill_score, min(60, 30 + len(title_matches) * 15))
 
             # ── Sector Bonus (0-20) ──
             sector_name = "General"

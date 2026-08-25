@@ -192,6 +192,7 @@
         "contract", "contractor", "freelance",
         "part_time", "part-time", "temporary"
     ],
+    "allow_all_remote_positions": true,
 
     "target_sectors": {
         "Data Operations & Analysis": [

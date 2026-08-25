@@ -36,15 +36,21 @@ class CVParser:
 
     SUPPORTED_EXTENSIONS: set[str] = {".pdf", ".txt", ".json"}
 
-    def __init__(self, known_skills: list[str] | None = None) -> None:
+    def __init__(self, known_skills: list[str] | dict[str, Any] | None = None) -> None:
         """
-        Inizializza il parser con la lista di skill conosciute.
+        Inizializza il parser con la lista di skill conosciute o il dict di configurazione.
 
         Args:
-            known_skills: Lista di competenze da cercare nel testo.
-                          Se None, usa un set di default.
+            known_skills: Lista di competenze o dict di config.json.
         """
-        self._known_skills: list[str] = known_skills or self._default_skills()
+        if isinstance(known_skills, dict):
+            candidate_skills = known_skills.get("candidate_profile", {}).get("skills", [])
+            search_skills = known_skills.get("search_keywords", [])
+            self._known_skills = list(dict.fromkeys(candidate_skills + search_skills + self._default_skills()))
+        elif isinstance(known_skills, list):
+            self._known_skills = known_skills if known_skills else self._default_skills()
+        else:
+            self._known_skills = self._default_skills()
 
     @staticmethod
     def _default_skills() -> list[str]:
