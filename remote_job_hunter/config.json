@@ -327,12 +327,26 @@
         "enabled": true,
         "provider": "auto",
         "ollama_url": "http://localhost:11434",
-        "ollama_model": "qwen2.5:1.5b",
-        "gguf_model_name": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
-        "gguf_filename": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
-        "gguf_download_url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf",
-        "models_dir": "models",
-        "temperature": 0.3
+        "preferred_models": [
+            "qwen2.5:7b",
+            "llama3.1:8b",
+            "qwen2.5:14b",
+            "mistral:7b",
+            "qwen2.5:1.5b",
+            "llama3.2:1b"
+        ],
+        "api_keys": {
+            "groq_api_key": "",
+            "gemini_api_key": "",
+            "openai_api_key": ""
+        },
+        "cloud_models": {
+            "groq_model": "llama-3.3-70b-versatile",
+            "gemini_model": "gemini-1.5-flash",
+            "openai_model": "gpt-4o-mini"
+        },
+        "deep_screening_enabled": true,
+        "temperature": 0.2
     },
 
     "output_csv_path": "results/job_matches.csv"
