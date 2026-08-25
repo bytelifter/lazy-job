@@ -222,6 +222,43 @@
         ]
     },
 
+    "automatable_indicators": {
+        "scraping_and_extraction": {
+            "weight": 35,
+            "keywords": ["web scraping", "scraping", "crawler", "crawling", "data extraction", "data mining", "scrape", "selenium", "playwright", "beautifulsoup", "scrapy", "extract data", "catalog extraction", "price monitoring", "lead collection"],
+            "strategy": "Python script (Playwright/Scrapy) + scheduled cron job to extract data automatically"
+        },
+        "data_processing_and_etl": {
+            "weight": 30,
+            "keywords": ["data cleaning", "csv", "excel automation", "data entry", "spreadsheet", "pandas", "data pipeline", "etl", "data processing", "format conversion", "pdf parsing", "json processing", "document processing", "text extraction"],
+            "strategy": "Pandas / Openpyxl script to automatically clean, parse, and reformat batches in seconds"
+        },
+        "api_sync_and_integrations": {
+            "weight": 25,
+            "keywords": ["api integration", "api sync", "zapier", "n8n", "make.com", "webhook", "rest api", "task automation", "workflow automation", "cron", "scheduled script"],
+            "strategy": "FastAPI webhook handler / n8n workflow to sync APIs 24/7 without manual intervention"
+        },
+        "ai_and_llm_agents": {
+            "weight": 25,
+            "keywords": ["llm", "langchain", "langflow", "openai", "ai agent", "chatbot", "prompt engineering", "automated responses", "text classification"],
+            "strategy": "LangChain / LLM pipeline to auto-generate outputs, summaries, or customer responses"
+        },
+        "qa_test_automation": {
+            "weight": 20,
+            "keywords": ["test automation", "qa automation", "synthetic monitoring", "automated testing", "e2e tests", "cypress", "selenium tests"],
+            "strategy": "Headless test suite executed automatically on CI/CD or schedule"
+        }
+    },
+
+    "manual_work_penalties": {
+        "keywords": [
+            "daily standup", "agile ceremonies", "sprint planning", "cross-functional meetings",
+            "stakeholder management", "on-call rotation", "live customer calls", "phone support",
+            "pair programming", "people management", "mentoring"
+        ],
+        "penalty_per_match": 15
+    },
+
     "high_value_indicators": {
         "hourly_min_usd": 40,
         "daily_min_usd": 300,
@@ -265,13 +302,13 @@
     ],
 
     "candidate_profile": {
-        "full_name": "Mario Rossi",
-        "first_name": "Mario",
-        "last_name": "Rossi",
-        "email": "mario.rossi.dev@example.com",
-        "phone": "+39 333 1234567",
+        "full_name": "Samuele Columbu",
+        "first_name": "Samuele",
+        "last_name": "Columbu",
+        "email": "columbusamuele@gmail.com",
+        "phone": "(+39) 389 924 3631",
         "location": "Italy",
-        "linkedin_url": "https://linkedin.com/in/mariorossi-dev",
+        "linkedin_url": "https://linkedin.com/in/samuele-columbu",
         "github_url": "https://github.com/bytelifter",
         "portfolio_url": "https://github.com/bytelifter",
         "cv_pdf_path": "test_cv.txt"

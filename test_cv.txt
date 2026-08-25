@@ -1,27 +1,24 @@
-CURRICULUM VITAE — Test Profile
+Samuele Columbu
+columbusamuele@gmail.com | (+39) 389 924 3631 | github.com/bytelifter
+Location: Italy | English: C1 (Advanced / CAE) | Italian: Native
 
 SUMMARY
-Professionista con 4 years of experience in Python development, data analysis, 
-and workflow automation. Specializzato in backend scripting, data processing pipelines 
-e API integration per clienti internazionali.
+Computer Science student & independent contractor specializing in Python development, 
+AI/LLM application development (LangChain, LangFlow), workflow automation, API integration, 
+and cybersecurity. Experienced in building secure full-stack applications and automated backend pipelines.
 
-COMPETENZE TECNICHE
-- Linguaggi: Python, SQL, JavaScript, Bash
-- Librerie: Pandas, NumPy, Requests, BeautifulSoup, Scrapy, Selenium
-- Database: PostgreSQL, MySQL, MongoDB, Redis
-- Frameworks: Flask, FastAPI, Django
-- Tools: Git, Docker, Linux, Excel, Power BI
-- Cloud: AWS, GCP
-- Altro: REST API, JSON, XML, CSV, ETL, Web Scraping, Automation, CI/CD
+TECHNICAL SKILLS
+- Languages: Python, Java, C++, PHP, SQL, HTML, CSS, JavaScript, Bash
+- AI & Automation: LangChain, LangFlow, LLMs, Web Scraping, REST APIs, JSON, CSV, Automation, ETL
+- Networking & Security: Cisco CCNA 7, Vulnerability Analysis, Data Protection, Network Defense
+- Tools & Frameworks: Git/GitHub, Docker, Linux, MS Office, Google Workspace, FastAPI, Flask
 
-ESPERIENZA PROFESSIONALE
-- Data Operations Contractor (2022-presente): Automazione report periodici, 
-  pulizia dataset, elaborazione flussi CSV/Excel per clienti enterprise.
-- Freelance Web Scraper (2020-2022): Estrazione cataloghi e-commerce, 
-  monitoraggio prezzi, lead generation tramite script schedulati.
-- Junior Data Analyst (2019-2020): Generazione report, data visualization, 
-  analisi dati con Pandas e Tableau.
+PROJECTS & EXPERIENCE
+- ASSETTO – Secure Online Voting System: Full-stack developer (PHP/SQL/JS). Managed project lifecycle, documentation, and security integrity.
+- AI Revolution: Specialized training and development in LangFlow and LangChain for LLM-powered applications and agentic workflows.
+- Freelance & Contractor Projects: Automated data scraping, API integrations, and secure backend workflows for remote engagements.
+- Model United Nations (IMUN): Diplomatic simulation in English focused on international security and cyber warfare.
 
-LINGUE
-- Italiano: Madrelingua
-- Inglese: C1 (Advanced)
+EDUCATION
+- BSc Computer Science — Sapienza University (2025–Present)
+- HS Diploma (IT) — ITIS Galilei (Grade: 94/100)

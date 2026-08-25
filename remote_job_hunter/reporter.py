@@ -45,6 +45,8 @@ class Reporter:
         "Job Type",
         "Sector",
         "Match Score",
+        "Automatable Score",
+        "Automation Strategy",
         "Salary",
         "Matched Skills",
         "Source",
@@ -135,6 +137,8 @@ class Reporter:
                         offer.job_type or "Contractor",
                         offer.sector,
                         offer.match_score,
+                        f"{offer.automatability_score}%",
+                        offer.automation_strategy,
                         offer.salary or "N/A",
                         ", ".join(offer.matched_skills),
                         offer.source,
@@ -201,14 +205,15 @@ class Reporter:
         score_color = self._score_color(offer.match_score)
         score_badge = f"{score_color}{self.BOLD}[{offer.match_score:3d}/100]{self.RESET}"
 
-        # High value badge
+        # High value badge & Automatable badge
         value_badge = f" {self.GREEN}💰 HIGH VALUE{self.RESET}" if offer.is_high_value else ""
+        auto_badge = f" {self.CYAN}{self.BOLD}⚡🤖 AUTOMATABLE ({offer.automatability_score}%){self.RESET}" if offer.is_highly_automatable else ""
 
         # Separator
         print(f"\n  {self.DIM}{'─' * 66}{self.RESET}")
 
         # Title line
-        print(f"  {self.BOLD}{self.WHITE}#{index:02d}{self.RESET}  {score_badge}  {self.BOLD}{offer.title}{self.RESET}{value_badge}")
+        print(f"  {self.BOLD}{self.WHITE}#{index:02d}{self.RESET}  {score_badge}  {self.BOLD}{offer.title}{self.RESET}{value_badge}{auto_badge}")
 
         # Company & Source
         print(f"       {self.CYAN}🏢 {offer.company}{self.RESET}  •  {self.DIM}{offer.source}{self.RESET}")
@@ -224,6 +229,10 @@ class Reporter:
         # Sector
         if offer.sector != "General":
             print(f"       {self.YELLOW}🏷️  {offer.sector}{self.RESET}")
+
+        # Automation Strategy
+        if offer.is_highly_automatable:
+            print(f"       {self.CYAN}⚡ Lazy Strategy: {offer.automation_strategy}{self.RESET}")
 
         # Matched skills
         if offer.matched_skills:
@@ -244,6 +253,7 @@ class Reporter:
         # Stats
         avg_score = sum(o.match_score for o in results) / len(results) if results else 0
         high_value_count = sum(1 for o in results if o.is_high_value)
+        highly_auto_count = sum(1 for o in results if o.is_highly_automatable)
         top_sectors: dict[str, int] = {}
         for o in results:
             if o.sector != "General":
@@ -252,9 +262,10 @@ class Reporter:
         print(f"\n{self.CYAN}{'─' * 70}{self.RESET}")
         print(f"  {self.BOLD}📈 SUMMARY STATISTICS{self.RESET}")
         print(f"  {self.DIM}{'─' * 40}{self.RESET}")
-        print(f"  Total matched jobs:       {self.BOLD}{len(results)}{self.RESET}")
-        print(f"  Average match score:      {self.BOLD}{avg_score:.1f}/100{self.RESET}")
-        print(f"  High Value jobs:          {self.GREEN}{self.BOLD}{high_value_count}{self.RESET}")
+        print(f"  Total matched jobs:             {self.BOLD}{len(results)}{self.RESET}")
+        print(f"  Average match score:            {self.BOLD}{avg_score:.1f}/100{self.RESET}")
+        print(f"  High Value jobs:                {self.GREEN}{self.BOLD}{high_value_count}{self.RESET}")
+        print(f"  ⚡ Highly Automatable (Lazy-Mode): {self.CYAN}{self.BOLD}{highly_auto_count}{self.RESET}")
 
         if top_sectors:
             print(f"  Top sectors:")

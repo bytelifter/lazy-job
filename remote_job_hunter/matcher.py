@@ -38,6 +38,11 @@ class ScoredOffer:
     sector: str = "General"
     is_high_value: bool = False
 
+    # Automatable & Delegation Index (Take the bag without manual labor)
+    automatability_score: int = 0
+    automation_strategy: str = "Standard implementation"
+    is_highly_automatable: bool = False
+
     @classmethod
     def from_job_offer(cls, offer: JobOffer, **scoring_kwargs: Any) -> ScoredOffer:
         """
@@ -106,6 +111,10 @@ class JobMatcher:
             k.lower(): [v.lower() for v in vals]
             for k, vals in self._geo_config.get("regions", {}).items()
         }
+
+        # Automatable / Delegation configuration
+        self._auto_indicators: dict[str, Any] = config.get("automatable_indicators", {})
+        self._manual_penalties: dict[str, Any] = config.get("manual_work_penalties", {})
 
     def process(
         self,
@@ -429,7 +438,10 @@ class JobMatcher:
                     except re.error:
                         continue
 
-            # ── Punteggio totale ──
+            # ── Automatable & Delegation Score (0-100) ──
+            auto_score, auto_strategy, is_highly_auto = self._calculate_automatability(searchable)
+
+            # ── Total Match Score ──
             total = min(skill_score + sector_score + value_score, 100)
 
             scored_offer = ScoredOffer.from_job_offer(
@@ -438,12 +450,49 @@ class JobMatcher:
                 matched_skills=matched,
                 sector=sector_name,
                 is_high_value=is_high_value,
+                automatability_score=auto_score,
+                automation_strategy=auto_strategy,
+                is_highly_automatable=is_highly_auto,
             )
             scored.append(scored_offer)
 
-        # Ordina per score decrescente
-        scored.sort(key=lambda o: o.match_score, reverse=True)
+        # Ordina per score decrescente (e prioritizza posizioni altamente automatizzabili)
+        scored.sort(key=lambda o: (o.is_highly_automatable, o.match_score), reverse=True)
         return scored
+
+    def _calculate_automatability(self, searchable: str) -> tuple[int, str, bool]:
+        """
+        Calcola l'indice di automazione e identificazione di lavori scriptabili/delegabili.
+
+        Returns:
+            Tuple con (score_0_100, strategia_consigliata, is_highly_automatable).
+        """
+        score = 15  # Baseline score for software roles
+        best_strategy = "Standard asynchronous execution"
+        highest_category_weight = 0
+
+        for cat_name, cat_data in self._auto_indicators.items():
+            weight = cat_data.get("weight", 20)
+            keywords = cat_data.get("keywords", [])
+            matches = sum(1 for kw in keywords if kw.lower() in searchable)
+
+            if matches > 0:
+                score += min(matches * (weight // 2), weight)
+                if weight > highest_category_weight:
+                    highest_category_weight = weight
+                    best_strategy = cat_data.get("strategy", best_strategy)
+
+        # Apply penalties for meeting-heavy / manual management roles
+        penalty_kws = self._manual_penalties.get("keywords", [])
+        penalty_val = self._manual_penalties.get("penalty_per_match", 15)
+        for pkw in penalty_kws:
+            if pkw.lower() in searchable:
+                score -= penalty_val
+
+        final_score = max(5, min(score, 100))
+        is_highly_auto = final_score >= 50
+
+        return final_score, best_strategy, is_highly_auto
 
     def _apply_min_score(self, offers: list[ScoredOffer]) -> list[ScoredOffer]:
         """
