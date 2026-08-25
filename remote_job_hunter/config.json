@@ -5,6 +5,13 @@
         "jobicy": "https://jobicy.com/api/v2/remote-jobs"
     },
 
+    "jobspy_settings": {
+        "enabled": true,
+        "sites": ["linkedin", "indeed", "glassdoor", "zip_recruiter"],
+        "results_wanted_per_search": 25,
+        "is_remote": true
+    },
+
     "_comment_rss_all": "Tutti i feed RSS disponibili su We Work Remotely — vengono filtrati in base alle aree selezionate",
     "rss_feeds_all": {
         "wwr_programming":    "https://weworkremotely.com/categories/remote-programming-jobs.rss",

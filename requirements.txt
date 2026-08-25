@@ -3,3 +3,6 @@ feedparser>=6.0.10
 requests>=2.31.0
 playwright>=1.40.0
 tqdm>=4.66.0
+python-jobspy>=1.1.80
+tls-client>=1.0.1
+markdownify>=1.2.0

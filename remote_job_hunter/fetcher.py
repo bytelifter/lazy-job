@@ -82,12 +82,12 @@ class JobFetcher:
             # Fallback: tutti i feed di default, nessun filtro categoria
             self._remotive_category = None
             self._jobicy_tag = None
-            self._himalayas_keywords = self._keywords[:5] or ["python remote"]
-            self._rss_feeds = config.get("rss_feeds_all", config.get("rss_feeds", {}))
+        self._jobspy_config: dict[str, Any] = config.get("jobspy_settings", {})
+        self._jobspy_enabled: bool = self._jobspy_config.get("enabled", True)
 
     def fetch_all(self) -> list[JobOffer]:
         """
-        Recupera offerte da tutte le fonti in parallelo.
+        Recupera offerte da tutte le fonti in parallelo (Remotive, Himalayas, Jobicy, WWR RSS, LinkedIn, Indeed).
 
         Returns:
             Lista aggregata di JobOffer da tutte le fonti.
@@ -100,15 +100,18 @@ class JobFetcher:
         all_offers: list[JobOffer] = []
         tasks: dict[str, Any] = {}
 
-        with ThreadPoolExecutor(max_workers=4) as executor:
+        with ThreadPoolExecutor(max_workers=5) as executor:
             tasks["Remotive"] = executor.submit(self._fetch_remotive)
             tasks["Himalayas"] = executor.submit(self._fetch_himalayas)
             tasks["Jobicy"] = executor.submit(self._fetch_jobicy)
             tasks["WWR RSS"] = executor.submit(self._fetch_wwr_rss)
 
+            if self._jobspy_enabled:
+                tasks["LinkedIn & Indeed (JobSpy)"] = executor.submit(self._fetch_jobspy)
+
             for source_name, future in tasks.items():
                 try:
-                    result = future.result(timeout=60)
+                    result = future.result(timeout=75)
                     all_offers.extend(result)
                     print(f"  [OK] {source_name}: {len(result)} jobs retrieved")
                 except Exception as e:
@@ -476,3 +479,88 @@ class JobFetcher:
             return dt.strftime("%Y-%m-%d")
         except (ValueError, TypeError, OSError):
             return str(timestamp)
+
+    # ──────────────────────────────────────────────
+    #  JOBSPY (LinkedIn, Indeed, Glassdoor, ZipRecruiter)
+    # ──────────────────────────────────────────────
+
+    def _fetch_jobspy(self) -> list[JobOffer]:
+        """
+        Recupera offerte in tempo reale da LinkedIn, Indeed, Glassdoor e ZipRecruiter
+        utilizzando la libreria python-jobspy.
+
+        Returns:
+            Lista di JobOffer normalizzate.
+        """
+        if not self._jobspy_enabled:
+            return []
+
+        try:
+            from jobspy import scrape_jobs
+        except ImportError:
+            return []
+
+        sites = self._jobspy_config.get("sites", ["linkedin", "indeed", "glassdoor"])
+        results_wanted = int(self._jobspy_config.get("results_wanted_per_search", 20))
+        search_terms = self._himalayas_keywords[:2] or ["python remote", "data analyst remote"]
+
+        offers: list[JobOffer] = []
+        seen_urls: set[str] = set()
+
+        for term in search_terms:
+            try:
+                df = scrape_jobs(
+                    site_name=sites,
+                    search_term=f"{term} remote",
+                    location="Italy",
+                    is_remote=True,
+                    results_wanted=results_wanted,
+                    hours_old=168,
+                )
+
+                if df is None or df.empty:
+                    continue
+
+                for _, row in df.iterrows():
+                    url = str(row.get("job_url", "")).strip()
+                    if not url or url in seen_urls:
+                        continue
+                    seen_urls.add(url)
+
+                    # Build salary string
+                    min_amt = row.get("min_amount")
+                    max_amt = row.get("max_amount")
+                    interval = str(row.get("interval", "")).lower()
+                    salary_str = ""
+                    if min_amt is not None and not (isinstance(min_amt, float) and str(min_amt) == "nan"):
+                        try:
+                            min_val = int(min_amt)
+                            if max_amt is not None and not (isinstance(max_amt, float) and str(max_amt) == "nan"):
+                                max_val = int(max_amt)
+                                salary_str = f"${min_val:,} - ${max_val:,} /{interval}".strip()
+                            else:
+                                salary_str = f"${min_val:,} /{interval}".strip()
+                        except (ValueError, TypeError):
+                            pass
+
+                    site_source = str(row.get("site", "JobSpy")).capitalize()
+
+                    offer = JobOffer(
+                        title=str(row.get("title", "")).strip(),
+                        company=str(row.get("company", "")).strip(),
+                        url=url,
+                        description=self._clean_html(str(row.get("description", ""))),
+                        job_type=str(row.get("job_type", "contract")).strip(),
+                        salary=salary_str,
+                        location=str(row.get("location", "Remote")).strip(),
+                        source=site_source,
+                        tags=[term.lower(), "remote", "linkedin/indeed"],
+                        pub_date=str(row.get("date_posted", ""))[:10],
+                    )
+                    if offer.title and offer.company:
+                        offers.append(offer)
+
+            except Exception:
+                continue
+
+        return offers
