@@ -12,6 +12,20 @@
         "is_remote": true
     },
 
+    "upwork_settings": {
+        "enabled": true,
+        "search_queries": [
+            "python automation",
+            "web scraping python",
+            "data processing pandas",
+            "api integration python",
+            "ai llm developer langchain"
+        ],
+        "poll_interval_minutes": 15,
+        "min_budget_fixed_usd": 150,
+        "min_hourly_rate_usd": 30
+    },
+
     "_comment_rss_all": "Tutti i feed RSS disponibili su We Work Remotely — vengono filtrati in base alle aree selezionate",
     "rss_feeds_all": {
         "wwr_programming":    "https://weworkremotely.com/categories/remote-programming-jobs.rss",

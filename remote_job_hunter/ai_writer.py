@@ -311,6 +311,55 @@ Cover Letter:"""
 
         return self._generate_template_cover_letter(candidate, job_title, company, matched_skills)
 
+    def generate_upwork_proposal(
+        self,
+        candidate: dict[str, Any],
+        gig_title: str,
+        gig_description: str,
+        budget: str = "",
+        skills: list[str] | None = None,
+    ) -> str:
+        """
+        Generates a winning Upwork freelance proposal tailored to the client's gig post.
+        """
+        skills_str = ", ".join(skills[:5]) if skills else "Python, Web Scraping, Data Automation, APIs"
+
+        system = (
+            "You are an elite Python freelancer on Upwork writing high-converting, concise client proposals. "
+            "Never use fluff, cliches, or generic intros. Start directly by addressing their technical problem."
+        )
+        prompt = f"""Write a sharp, 120-word freelance proposal for this Upwork gig:
+Gig Title: {gig_title}
+Client Job Post: {gig_description[:600]}
+Candidate Skills: {skills_str}
+Candidate Name: {candidate.get('full_name', 'Samuele Columbu')}
+GitHub: https://github.com/bytelifter
+
+Rules:
+1. First line: Acknowledge the exact project objective without saying 'Hi, I saw your post'.
+2. Explain the exact technical approach in Python ({skills_str}) and error handling.
+3. State timeline: ready to deliver clean, documented code within 24-48 hours.
+4. Mention readiness to run a quick test or share sample outputs.
+5. End with candidate name and GitHub link.
+
+Proposal:"""
+
+        resp = self._call_llm(prompt, system_prompt=system, max_tokens=250, model_override=self._fast_model)
+        if resp:
+            return resp
+
+        return (
+            f"Hi,\n\n"
+            f"I can build a reliable Python automation solution for your '{gig_title}' project.\n\n"
+            f"My Approach:\n"
+            f"• Automated Python pipeline ({skills_str}) handling data extraction, cleaning, and export.\n"
+            f"• Robust error handling, rate-limiting, and schema validation.\n"
+            f"• Clean, self-documenting code with immediate setup instructions.\n\n"
+            f"I am ready to deliver the complete solution within 24-48 hours. Feel free to check my public repositories at https://github.com/bytelifter or message me to discuss the details.\n\n"
+            f"Best regards,\n"
+            f"{candidate.get('full_name', 'Samuele Columbu')}"
+        )
+
     def answer_form_question(
         self,
         candidate: dict[str, Any],
