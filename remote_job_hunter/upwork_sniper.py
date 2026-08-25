@@ -37,15 +37,17 @@ class FreelanceGig:
     skills: list[str] = field(default_factory=list)
     pub_date: str = ""
     project_id: str = ""
+    proposal: str = ""
 
 
 class UpworkSniper:
     """
     Scans Freelancer & Upwork feeds for new gigs, generates AI proposals,
-    and alerts the user via Telegram.
+    saves results to results_gigs/ directory, and alerts the user via Telegram.
     """
 
-    CACHE_FILE = Path("results/seen_freelance_gigs.json")
+    RESULTS_DIR = Path("results_gigs")
+    CACHE_FILE = Path("results_gigs/seen_freelance_gigs.json")
 
     def __init__(self, config: dict[str, Any]) -> None:
         self._config = config
@@ -172,6 +174,7 @@ class UpworkSniper:
             budget=price_str,
             skills=gig.skills,
         )
+        gig.proposal = proposal
 
         # Dispatch alert to Telegram
         if self._notifier.is_configured:
@@ -190,6 +193,36 @@ class UpworkSniper:
             self._notifier.send_message(msg)
             print("   ✅ Instant Telegram proposal dispatched!")
 
+    def _save_gigs_csv(self, gigs: list[FreelanceGig]) -> str:
+        """Saves processed gigs to a dedicated CSV file in results_gigs/."""
+        self.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = self.RESULTS_DIR / f"freelance_gigs_{timestamp}.csv"
+
+        import csv
+
+        with open(filename, mode="w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow([
+                "Timestamp", "Platform", "Title", "Budget", "Currency",
+                "Skills", "Direct_URL", "AI_Proposal", "Description"
+            ])
+            for g in gigs:
+                writer.writerow([
+                    g.pub_date or datetime.now().strftime("%Y-%m-%d %H:%M"),
+                    g.platform,
+                    g.title,
+                    g.budget,
+                    g.currency,
+                    ", ".join(g.skills),
+                    g.url,
+                    g.proposal,
+                    g.description,
+                ])
+
+        print(f"📁 Gigs saved to dedicated folder: {filename.resolve()}")
+        return str(filename)
+
     def run_once(self, max_alerts: int = 5) -> int:
         """Runs a single scan of freelance feeds."""
         print("\n🔍 Scanning freelance feeds for fresh Python/Automation gigs...")
@@ -199,6 +232,9 @@ class UpworkSniper:
         for gig in gigs[:max_alerts]:
             self.process_and_alert(gig)
             time.sleep(1)
+
+        if gigs:
+            self._save_gigs_csv(gigs)
 
         return len(gigs)
 
