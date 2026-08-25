@@ -15,10 +15,13 @@ venv.bak/
 results/
 *.csv
 
-# Personal data & CV uploads
+# Personal data, secrets & local configs
 *.pdf
 my_cv.*
 personal_*
+*.local.json
+.env
+.env.*
 
 # IDE & OS files
 .idea/
