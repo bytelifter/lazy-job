@@ -223,53 +223,34 @@ class JobMatcher:
             offer_loc = offer.location.strip().lower()
             offer_text = f"{offer.title} {offer.location}".lower()
 
-            # 1. Nessuna restrizione / Worldwide / Anywhere / Remote puro -> Compatibile
-            if not offer_loc or any(w in offer_loc for w in self._worldwide_terms):
-                # Ma controlla che non ci sia un "US only" nascosto nel titolo
-                if any(excl in offer_text for excl in other_exclusive_locations):
-                    continue
-                result.append(offer)
-                continue
-
-            # 2. Controlla se la location menziona direttamente il paese o la regione dell'utente
-            # Gestisce liste come "Australia, Germany, Italy, United Kingdom"
-            is_compatible = False
+            # 1. Controlla se la location menziona direttamente il paese o la macro-regione dell'utente (es. Italy, Europe, EU, EMEA)
+            # Gestisce sia singoli paesi che liste tipo "Germany, Italy, France"
+            is_explicitly_user_region = False
             for alias in user_country_aliases:
-                # Usa match esatto o boundary per evitare falsi positivi brevi come 'eu' o 'us'
                 if len(alias) <= 3:
                     pattern = rf"\b{re.escape(alias)}\b"
-                    if re.search(pattern, offer_loc):
-                        is_compatible = True
+                    if re.search(pattern, offer_loc) or re.search(pattern, offer.title.lower()):
+                        is_explicitly_user_region = True
                         break
                 else:
-                    if alias in offer_loc:
-                        is_compatible = True
+                    if alias in offer_loc or alias in offer.title.lower():
+                        is_explicitly_user_region = True
                         break
 
-            if is_compatible:
+            if is_explicitly_user_region:
                 result.append(offer)
                 continue
 
-            # 3. Se specifica restrizioni per altri paesi/regioni senza includere l'utente -> Esclude
-            # Esempio: "United States", "US Only", "France", "Romania", "LATAM" quando utente è in Italy
-            is_explicitly_elsewhere = False
-            for region_name, country_list in self._regions_map.items():
-                if region_name in user_regions:
-                    # Controlla se c'è un singolo paese della stessa regione diverso dal paese utente
-                    # (es. job dice solo "Spain" o "France" o "Romania" e non menziona Europe o Italy)
-                    for c in country_list:
-                        if c != loc_clean and c in offer_loc and not any(a in offer_loc for a in user_country_aliases):
-                            is_explicitly_elsewhere = True
-                            break
-                else:
-                    # Regione diversa
-                    if any(c in offer_loc for c in country_list):
-                        is_explicitly_elsewhere = True
-                        break
+            # 2. Se è aperta a tutto il mondo / Anywhere / Global / Remote puro (e non c'è esclusione esplicita di altre regioni)
+            is_worldwide = not offer_loc or any(w in offer_loc for w in self._worldwide_terms)
+            if is_worldwide:
+                # Controlla che non ci sia una restrizione nascosta ad altre regioni (es. "US Only", "LATAM Only")
+                if not any(excl in offer_text for excl in other_exclusive_locations):
+                    result.append(offer)
+                    continue
 
-            if not is_explicitly_elsewhere:
-                # Se non è esplicitamente ristretto a un altro paese (es. dice solo "Remote - Anywhere"), accetta
-                result.append(offer)
+            # 3. Se la location è specificata per altri paesi/regioni senza menzionare Italy, Europe o Worldwide -> Scarta
+            # (es. "South Africa", "Saudi Arabia", "Germany", "France", "United States", "Costa Rica", "Egypt")
 
         return result
 

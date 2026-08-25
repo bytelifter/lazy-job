@@ -147,9 +147,12 @@ class TelegramNotifier:
             f"🔗 <a href='{direct_link}'><b>Open Direct Job Link</b></a>\n"
         )
 
-        if status == "MANUAL_REQUIRED" and cover_letter:
-            snippet = cover_letter[:250].replace("<", "&lt;").replace(">", "&gt;")
-            msg += f"\n📝 <b>AI Cover Letter Pitch:</b>\n<i>\"{snippet}...\"</i>\n"
+        if cover_letter:
+            clean_letter = cover_letter.replace("<", "&lt;").replace(">", "&gt;")
+            msg += (
+                f"\n📄 <b>FULL READY-TO-PASTE COVER LETTER:</b>\n"
+                f"<blockquote>{clean_letter}</blockquote>\n"
+            )
 
         return self.send_message(msg)
 
