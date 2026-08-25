@@ -2,16 +2,17 @@
 ai_writer.py — Lightweight Local AI engine for writing tailored cover letters
 and answering ATS application form questions.
 
-Supports:
-1. Ollama local API (e.g., qwen2.5:1.5b, llama3.2:1b) if running on http://localhost:11434
-2. Local GGUF execution via llama-cpp-python (if available)
-3. Advanced dynamic template generator fallback (zero external dependencies)
+Operates with the persona of a skilled, confident, senior independent contractor:
+- Knows their market value, clear on compensation (competitive, fair senior contractor rates).
+- Focuses on ROI, immediate delivery, autonomous execution, and clean architecture.
+- Contextualizes every answer using BOTH the candidate's CV and the target job offer.
 """
 
 from __future__ import annotations
 
 import json
 import os
+import re
 from pathlib import Path
 from typing import Any
 
@@ -60,7 +61,6 @@ class LocalAIWriter:
             resp = requests.get(f"{self._ollama_url}/api/tags", timeout=1.5)
             if resp.status_code == 200:
                 models = [m.get("name", "") for m in resp.json().get("models", [])]
-                # Pick configured model or first available
                 if self._ollama_model in models or any(self._ollama_model.split(":")[0] in m for m in models):
                     return "ollama"
                 elif models:
@@ -86,9 +86,10 @@ class LocalAIWriter:
         company: str,
         job_description: str,
         matched_skills: list[str],
+        salary_context: str = "",
     ) -> str:
         """
-        Generates a concise, high-impact cover letter tailored to the job.
+        Generates a concise, authoritative cover letter tailored to the job.
 
         Args:
             candidate: Candidate profile dictionary.
@@ -96,13 +97,14 @@ class LocalAIWriter:
             company: Company name.
             job_description: Cleaned job description text.
             matched_skills: List of matching skills detected.
+            salary_context: Stated salary/compensation range if available.
 
         Returns:
             Professional cover letter text.
         """
         if self._provider == "ollama":
             return self._generate_ollama_cover_letter(
-                candidate, job_title, company, job_description, matched_skills
+                candidate, job_title, company, job_description, matched_skills, salary_context
             )
         else:
             return self._generate_template_cover_letter(
@@ -115,23 +117,38 @@ class LocalAIWriter:
         question: str,
         job_title: str,
         company: str,
+        job_description: str = "",
+        salary_context: str = "",
+        matched_skills: list[str] | None = None,
     ) -> str:
         """
-        Answers a specific custom question from an ATS application form.
+        Answers a specific custom question from an ATS application form
+        using BOTH the candidate's CV background and the job offer context.
+
+        Tone: Confident, skilled contractor who knows what they want,
+        values their work appropriately (fair/competitive rate without overshooting),
+        and directly addresses the question with technical substance.
 
         Args:
             candidate: Candidate profile dictionary.
             question: Question prompt text.
             job_title: Target job title.
             company: Company name.
+            job_description: Job requirements context.
+            salary_context: Stated salary from posting.
+            matched_skills: Relevant skills matched.
 
         Returns:
             Concise, tailored answer text.
         """
         if self._provider == "ollama":
-            return self._generate_ollama_answer(candidate, question, job_title, company)
+            return self._generate_ollama_answer(
+                candidate, question, job_title, company, job_description, salary_context, matched_skills
+            )
         else:
-            return self._generate_template_answer(candidate, question)
+            return self._generate_template_answer(
+                candidate, question, job_title, company, salary_context, matched_skills
+            )
 
     def _generate_ollama_cover_letter(
         self,
@@ -140,22 +157,27 @@ class LocalAIWriter:
         company: str,
         job_description: str,
         matched_skills: list[str],
+        salary_context: str = "",
     ) -> str:
         """Generates cover letter using local Ollama model."""
-        prompt = f"""You are a professional contractor and software engineer.
-Write a concise, compelling, 3-paragraph cover letter applying for the following remote contractor role:
+        skills_str = ", ".join(matched_skills[:8]) if matched_skills else "Python, APIs, Automation"
+        comp_name = company if company and company != "N/A" else "the hiring team"
 
-Role: {job_title}
-Company: {company or 'Hiring Team'}
-Target Key Skills: {', '.join(matched_skills[:8])}
+        prompt = f"""You are writing as a senior, highly competent independent contractor applying for a remote role.
+Tone: Confident, direct, professional, value-driven. No generic fluff, no desperation. You know your skills and what you bring to the table.
+
+Target Role: {job_title}
+Company: {comp_name}
+Key Skills to Highlight: {skills_str}
 Candidate Name: {candidate.get('full_name', 'Applicant')}
-Candidate Experience Summary: Experienced contractor specialized in {', '.join(matched_skills[:6])} for international clients.
+Candidate Location: {candidate.get('location', 'Europe (Full Remote)')}
+Job Requirements Summary: {job_description[:400]}
 
-Guidelines:
-1. First paragraph: Introduce interest in the {job_title} position at {company} as an independent contractor.
-2. Second paragraph: Highlight direct experience with {', '.join(matched_skills[:4])}, focusing on delivering reliable, automated, scalable solutions.
-3. Third paragraph: State full remote availability across international time zones and offer to discuss how to deliver immediate value.
-4. Keep tone professional, confident, and direct. Do not include placeholders like [Insert Date].
+Instructions:
+1. Paragraph 1: Direct statement of interest for the {job_title} contractor position, highlighting specialized background in {skills_str}.
+2. Paragraph 2: Concrete mention of delivering reliable, automated, scalable systems with minimal onboarding time and autonomous execution.
+3. Paragraph 3: Availability for full remote engagement across international time zones and readiness to discuss deliverables.
+4. Keep it under 200 words. Do not include template placeholders like [Date] or [Phone Number].
 
 Cover Letter:"""
 
@@ -177,7 +199,6 @@ Cover Letter:"""
         except Exception:
             pass
 
-        # Fallback to template if Ollama request fails
         return self._generate_template_cover_letter(candidate, job_title, company, matched_skills)
 
     def _generate_ollama_answer(
@@ -186,15 +207,28 @@ Cover Letter:"""
         question: str,
         job_title: str,
         company: str,
+        job_description: str = "",
+        salary_context: str = "",
+        matched_skills: list[str] | None = None,
     ) -> str:
-        """Answers form questions using local Ollama model."""
-        prompt = f"""Answer the following job application question concisely in 2-3 sentences from the perspective of an experienced contractor.
+        """Answers form questions using local Ollama model with full CV & Job context."""
+        skills_str = ", ".join(matched_skills[:6]) if matched_skills else "Python, backend engineering, data automation"
+        comp_name = company if company and company != "N/A" else "the company"
 
-Candidate Name: {candidate.get('full_name', 'Applicant')}
-Role: {job_title} at {company}
-Question: {question}
+        prompt = f"""You are answering an application form question as a senior independent contractor applying for:
+Role: {job_title} at {comp_name}
+Relevant Candidate Skills: {skills_str}
+Job Budget/Salary Info: {salary_context if salary_context else 'Not specified (Standard senior market: $60-$85/hr)'}
+Question Asked: {question}
 
-Direct Answer:"""
+Persona Guidelines:
+1. Tone: Confident, skilled, clear-minded. You know your craft, your market value, and what you want.
+2. Compensation/Salary questions: Request fair, solid, competitive compensation. If the job listed a salary range ({salary_context}), align confidently with the upper-mid range. If no salary was listed, state a realistic, competitive senior contractor rate ($60-$85/hr or €50-€75/hr / equivalent monthly), open to discussing milestone-based deliverables. Never undersell yourself and do not ask for ridiculous numbers.
+3. Technical/Experience questions: Answer directly, referencing {skills_str} and practical production experience.
+4. Availability/Location: Full remote availability, seamless international time zone coverage.
+5. Length: 2 to 3 concise, punchy sentences. Direct answer only, no preamble.
+
+Answer:"""
 
         try:
             payload = {
@@ -203,10 +237,10 @@ Direct Answer:"""
                 "stream": False,
                 "options": {
                     "temperature": 0.2,
-                    "num_predict": 120,
+                    "num_predict": 150,
                 },
             }
-            resp = requests.post(f"{self._ollama_url}/api/generate", json=payload, timeout=10)
+            resp = requests.post(f"{self._ollama_url}/api/generate", json=payload, timeout=12)
             if resp.status_code == 200:
                 ans = resp.json().get("response", "").strip()
                 if ans:
@@ -214,7 +248,9 @@ Direct Answer:"""
         except Exception:
             pass
 
-        return self._generate_template_answer(candidate, question)
+        return self._generate_template_answer(
+            candidate, question, job_title, company, salary_context, matched_skills
+        )
 
     def _generate_template_cover_letter(
         self,
@@ -223,18 +259,18 @@ Direct Answer:"""
         company: str,
         matched_skills: list[str],
     ) -> str:
-        """Fallback dynamic template cover letter."""
+        """Fallback dynamic template cover letter with senior contractor tone."""
         name = candidate.get("full_name", "Applicant")
         comp = company if company and company != "N/A" else "the Hiring Team"
-        skills_str = ", ".join(matched_skills[:5]) if matched_skills else "Python, API integration, and automation"
+        skills_str = ", ".join(matched_skills[:5]) if matched_skills else "Python, API automation, and data pipelines"
 
         letter = f"""Dear {comp},
 
-I am writing to express my strong interest in the {job_title} role. As an independent contractor with a proven background in {skills_str}, I specialize in building robust, automated workflows and data-driven solutions for international teams.
+I am applying for the {job_title} position as an independent contractor. With a strong track record across {skills_str}, I specialize in designing and shipping clean, automated, and maintainable systems for distributed teams.
 
-Throughout my experience, I have delivered scalable backend pipelines, seamless API integrations, and efficient data processing systems. My technical stack directly aligns with your requirements, allowing me to onboard rapidly and contribute immediate value to your ongoing projects.
+I focus on high-impact deliverables: building resilient data pipelines, orchestrating seamless API integrations, and streamlining backend operations with minimal oversight. I quickly get up to speed with existing architectures and operate with full autonomy in remote settings.
 
-I operate with high autonomy in remote environments, ensuring timely communication, transparent progress, and clean, well-tested deliverables. I would welcome the opportunity to discuss how my skill set can support your team's objectives.
+I work comfortably across international time zones and am available for immediate contract engagements. I welcome the opportunity to discuss how I can contribute to {comp}'s upcoming milestones.
 
 Best regards,
 {name}
@@ -242,19 +278,48 @@ Best regards,
 {candidate.get('github_url', '')}"""
         return letter
 
-    def _generate_template_answer(self, candidate: dict[str, Any], question: str) -> str:
-        """Fallback rule-based answers for common ATS questions."""
+    def _generate_template_answer(
+        self,
+        candidate: dict[str, Any],
+        question: str,
+        job_title: str = "",
+        company: str = "",
+        salary_context: str = "",
+        matched_skills: list[str] | None = None,
+    ) -> str:
+        """Fallback rule-based answers with confident senior contractor persona."""
         q_lower = question.lower()
+        skills_str = ", ".join(matched_skills[:4]) if matched_skills else "Python, automation, and API integration"
 
-        if any(k in q_lower for k in ("salary", "rate", "compensation", "expectation", "hourly")):
-            return "Negotiable based on project scope, standard market rate for senior contractor roles ($50-80/hr)."
-        elif any(k in q_lower for k in ("notice", "start", "available", "when can you")):
-            return "Immediately available for contract/freelance engagements (full remote)."
-        elif any(k in q_lower for k in ("location", "where are you", "country", "based")):
-            return f"Based in {candidate.get('location', 'Europe')}, working comfortably with global time zones (EST, PST, CET, GMT)."
-        elif any(k in q_lower for k in ("authorized", "legally", "visa", "sponsorship")):
-            return "Yes, authorized to work as an independent B2B contractor / freelancer worldwide."
-        elif any(k in q_lower for k in ("why", "interest", "excite")):
-            return "I am passionate about solving complex automation and engineering challenges and delivering high-leverage business value as an independent specialist."
+        # Salary / Rate Question
+        if any(k in q_lower for k in ("salary", "rate", "compensation", "expectation", "hourly", "desired pay")):
+            if salary_context and salary_context != "N/A":
+                return f"My target compensation is aligned with the posted budget for this role ({salary_context}), reflecting my senior delivery speed and autonomous execution."
+            else:
+                return "My target rate is $65-$85/hr (or equivalent milestone/monthly retainer based on project scope), commensurate with senior contractor expertise and fast time-to-delivery."
+
+        # Availability / Start Date
+        elif any(k in q_lower for k in ("notice", "start", "available", "when can you", "how soon")):
+            return "Available immediately for full remote contract and freelance engagements with full-time or dedicated project allocation."
+
+        # Location / Timezone
+        elif any(k in q_lower for k in ("location", "where are you", "country", "based", "timezone", "time zone")):
+            user_loc = candidate.get("location", "Europe")
+            return f"Based in {user_loc}, with extensive experience collaborating asynchronously and synchronously with US, European, and global teams."
+
+        # Work Authorization / Contractor B2B
+        elif any(k in q_lower for k in ("authorized", "legally", "visa", "sponsorship", "citizen")):
+            return "Fully authorized to work internationally as an independent B2B contractor / consultant with streamlined invoicing."
+
+        # Why this role / company
+        elif any(k in q_lower for k in ("why", "interest", "excite", "fit", "tell us about")):
+            comp_display = company if company and company != "N/A" else "this project"
+            return f"The technical challenges at {comp_display} directly align with my expertise in {skills_str}. I enjoy diving into demanding problems and shipping robust, production-grade solutions."
+
+        # Experience / Technical depth
+        elif any(k in q_lower for k in ("experience", "years", "background", "project", "stack")):
+            return f"Extensive hands-on production experience in {skills_str}, delivering high-throughput data processing, automated workflows, and clean API integrations."
+
+        # Default fallback
         else:
-            return "Experienced senior contractor with extensive hands-on expertise in backend automation, API integrations, and robust data pipelines."
+            return f"Senior contractor specialized in {skills_str}, focused on autonomous execution, clear communication, and high-ROI technical deliverables."

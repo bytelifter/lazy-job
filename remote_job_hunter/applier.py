@@ -287,9 +287,8 @@ class WebFormDispatcher:
             )
 
     def _autofill_lever(self, page: Any, offer: ScoredOffer, cover_letter: str) -> ApplicationResult:
-        """Autofills Lever ATS application form."""
+        """Autofills Lever ATS application form and answers custom questions."""
         try:
-            # Check for application form
             if page.locator("input[name='name']").count() > 0:
                 page.fill("input[name='name']", self._candidate.get("full_name", ""))
                 page.fill("input[name='email']", self._candidate.get("email", ""))
@@ -311,16 +310,34 @@ class WebFormDispatcher:
                     if file_input.count() > 0:
                         file_input.set_input_files(str(cv_path.resolve()))
 
+                # Answer any additional custom question textareas
+                custom_textareas = page.locator("textarea:not([name='comments']):visible")
+                count_ta = custom_textareas.count()
+                for i in range(count_ta):
+                    ta = custom_textareas.nth(i)
+                    label_text = ta.evaluate("el => el.closest('div')?.innerText || el.placeholder || ''")
+                    if label_text:
+                        ans = self._ai_writer.answer_form_question(
+                            candidate=self._candidate,
+                            question=label_text[:120],
+                            job_title=offer.title,
+                            company=offer.company,
+                            job_description=offer.description,
+                            salary_context=offer.salary,
+                            matched_skills=offer.matched_skills,
+                        )
+                        ta.fill(ans)
+
                 return ApplicationResult(
                     job_title=offer.title,
                     company=offer.company,
                     channel="ATS_Form (Lever)",
                     status="AUTO_FILLED",
-                    details="Lever form successfully autofilled (Name, Email, Resume, GitHub, AI Cover Letter).",
+                    details="Lever form successfully autofilled (Name, Email, Resume, GitHub, AI Cover Letter & Q&A).",
                     direct_link=offer.url,
                     cover_letter=cover_letter,
                 )
-        except Exception as e:
+        except Exception:
             pass
 
         return ApplicationResult(
@@ -328,13 +345,13 @@ class WebFormDispatcher:
             company=offer.company,
             channel="ATS_Form (Lever)",
             status="MANUAL_REQUIRED",
-            details="Lever custom fields detected. Direct link & AI cover letter ready.",
+            details="Lever custom verification required. Direct link & AI cover letter ready.",
             direct_link=offer.url,
             cover_letter=cover_letter,
         )
 
     def _autofill_greenhouse(self, page: Any, offer: ScoredOffer, cover_letter: str) -> ApplicationResult:
-        """Autofills Greenhouse ATS application form."""
+        """Autofills Greenhouse ATS application form and answers custom questions."""
         try:
             if page.locator("#first_name").count() > 0:
                 page.fill("#first_name", self._candidate.get("first_name", "Mario"))
@@ -350,12 +367,31 @@ class WebFormDispatcher:
                     if file_input.count() > 0:
                         file_input.set_input_files(str(cv_path.resolve()))
 
+                # Answer custom questions on Greenhouse
+                custom_inputs = page.locator(".field:has(textarea), .field:has(input[type='text'])")
+                for i in range(min(custom_inputs.count(), 5)):
+                    field_elem = custom_inputs.nth(i)
+                    label = field_elem.locator("label").inner_text() if field_elem.locator("label").count() > 0 else ""
+                    if label and not any(ign in label.lower() for ign in ("name", "email", "phone", "resume", "cv")):
+                        ans = self._ai_writer.answer_form_question(
+                            candidate=self._candidate,
+                            question=label,
+                            job_title=offer.title,
+                            company=offer.company,
+                            job_description=offer.description,
+                            salary_context=offer.salary,
+                            matched_skills=offer.matched_skills,
+                        )
+                        target_input = field_elem.locator("textarea, input[type='text']")
+                        if target_input.count() > 0 and not target_input.input_value():
+                            target_input.fill(ans)
+
                 return ApplicationResult(
                     job_title=offer.title,
                     company=offer.company,
                     channel="ATS_Form (Greenhouse)",
                     status="AUTO_FILLED",
-                    details="Greenhouse form successfully autofilled.",
+                    details="Greenhouse form successfully autofilled with AI answers.",
                     direct_link=offer.url,
                     cover_letter=cover_letter,
                 )
@@ -414,6 +450,7 @@ class ApplicationOrchestrator:
                 company=offer.company,
                 job_description=offer.description,
                 matched_skills=offer.matched_skills,
+                salary_context=offer.salary,
             )
 
             # 2. Check for direct email contact
