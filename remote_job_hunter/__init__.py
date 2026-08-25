@@ -1,10 +1,12 @@
 """
-remote_job_hunter — Sistema avanzato di job hunting automatizzato.
+remote_job_hunter — Advanced automated job hunting & application pipeline.
 
-Pipeline batch CLI per la ricerca, il filtraggio e il matching
-di offerte contractor/freelance remote ad alta remunerazione.
+CLI batch pipeline for discovering, filtering, matching, and applying
+to high-value remote contractor & freelance positions.
 """
 
+from .ai_writer import LocalAIWriter
+from .applier import ApplicationOrchestrator, ApplicationResult
 from .cv_parser import CVParser, UserProfile
 from .fetcher import JobFetcher, JobOffer
 from .matcher import JobMatcher, ScoredOffer
@@ -18,4 +20,7 @@ __all__ = [
     "JobMatcher",
     "ScoredOffer",
     "Reporter",
+    "LocalAIWriter",
+    "ApplicationOrchestrator",
+    "ApplicationResult",
 ]

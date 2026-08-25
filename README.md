@@ -16,6 +16,12 @@ Automated CLI batch pipeline designed for discovering, filtering, and scoring **
   - Sector relevance (0–20 pts)
   - High-value budget/salary indicators (0–20 pts)
 - **Automatic De-duplication**: Scans previous search outputs to exclude already discovered listings.
+- **Local AI Cover Letter & Q&A Engine**: Lightweight AI model engine (~1 GB VRAM / Ollama / GGUF / dynamic template fallback) that writes tailored, role-specific cover letters and answers ATS form questions.
+- **Automated & Assisted Application Dispatch**:
+  - Direct Email dispatch via SMTP with attached PDF resume and tailored AI cover letter.
+  - Standard ATS web form auto-filling (Lever, Greenhouse, Workable) via **Playwright**.
+  - **Anti-Bot / CAPTCHA & Custom Question Detection**: Gracefully detects Cloudflare Turnstile, reCAPTCHA, and custom questions, generating direct 1-click links and ready-to-paste tailored pitches.
+  - **Application History Log**: Exports `results/application_log_YYYYMMDD_HHMMSS.csv` tracking all dispatched applications and manual links.
 - **Export & Terminal Reporting**:
   - Timestamped Excel-compatible CSV output (`results/job_matches_YYYYMMDD_HHMMSS.csv`)
   - ANSI colored terminal report with statistics breakdown

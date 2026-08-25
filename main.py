@@ -37,6 +37,7 @@ if sys.platform == "win32":
     except Exception:
         pass
 
+from remote_job_hunter.applier import ApplicationOrchestrator
 from remote_job_hunter.cv_parser import CVParser, UserProfile
 from remote_job_hunter.fetcher import JobFetcher
 from remote_job_hunter.matcher import JobMatcher
@@ -450,6 +451,31 @@ def main() -> None:
         results,
         total_fetched=total_fetched,
     )
+
+    # ── Step 12: Automated & Assisted Application Assistant ──
+    if results:
+        print(f"\n{BOLD}🚀 AUTOMATED & ASSISTED APPLICATION DISPATCH{RESET}")
+        print(f"{DIM}{'─' * 50}{RESET}")
+        print(f"  The assistant can generate tailored AI cover letters, autofill standard ATS forms,")
+        print(f"  and provide direct 1-click links for jobs requiring manual completion (CAPTCHAs/custom questions).")
+        print()
+
+        try:
+            apply_choice = input(
+                f"  {CYAN}➜{RESET} Launch application assistant for top matches? [{GREEN}Y{RESET}/N]: "
+            ).strip().upper()
+        except (EOFError, KeyboardInterrupt):
+            print(f"\n  {RED}Skipping application assistant.{RESET}")
+            apply_choice = "N"
+
+        if apply_choice in ("Y", "YES", "", "S", "SI"):
+            app_orchestrator = ApplicationOrchestrator(config)
+            app_results = app_orchestrator.process_applications(results, max_applications=10)
+
+            app_log_filename = f"application_log_{timestamp}.csv"
+            app_log_path = results_dir / app_log_filename
+            saved_log_path = app_orchestrator.save_application_log(app_results, str(app_log_path))
+            print(f"\n  {GREEN}✓ Application summary log saved to: {saved_log_path}{RESET}\n")
 
 
 if __name__ == "__main__":

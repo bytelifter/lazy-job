@@ -264,5 +264,39 @@
         "terraform", "kubernetes", "ansible"
     ],
 
+    "candidate_profile": {
+        "full_name": "Mario Rossi",
+        "first_name": "Mario",
+        "last_name": "Rossi",
+        "email": "mario.rossi.dev@example.com",
+        "phone": "+39 333 1234567",
+        "location": "Italy",
+        "linkedin_url": "https://linkedin.com/in/mariorossi-dev",
+        "github_url": "https://github.com/bytelifter",
+        "portfolio_url": "https://github.com/bytelifter",
+        "cv_pdf_path": "test_cv.txt"
+    },
+
+    "smtp_settings": {
+        "enabled": false,
+        "dry_run": true,
+        "smtp_host": "smtp.gmail.com",
+        "smtp_port": 587,
+        "sender_email": "your_email@gmail.com",
+        "sender_password": "your_app_password"
+    },
+
+    "local_ai_settings": {
+        "enabled": true,
+        "provider": "auto",
+        "ollama_url": "http://localhost:11434",
+        "ollama_model": "qwen2.5:1.5b",
+        "gguf_model_name": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+        "gguf_filename": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+        "gguf_download_url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+        "models_dir": "models",
+        "temperature": 0.3
+    },
+
     "output_csv_path": "results/job_matches.csv"
 }
