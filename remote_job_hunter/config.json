@@ -7,7 +7,7 @@
 
     "jobspy_settings": {
         "enabled": true,
-        "sites": ["linkedin", "indeed", "glassdoor", "zip_recruiter"],
+        "sites": ["linkedin", "indeed"],
         "results_wanted_per_search": 25,
         "is_remote": true
     },

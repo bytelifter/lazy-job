@@ -82,6 +82,9 @@ class JobFetcher:
             # Fallback: tutti i feed di default, nessun filtro categoria
             self._remotive_category = None
             self._jobicy_tag = None
+            self._himalayas_keywords = self._keywords[:5] or ["python remote"]
+            self._rss_feeds = config.get("rss_feeds_all", config.get("rss_feeds", {}))
+
         self._jobspy_config: dict[str, Any] = config.get("jobspy_settings", {})
         self._jobspy_enabled: bool = self._jobspy_config.get("enabled", True)
 
