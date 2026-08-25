@@ -121,11 +121,11 @@ class UpworkSniper:
                         seo_url = p.get("seo_url", "")
                         direct_url = f"https://www.freelancer.com/projects/{seo_url}" if seo_url else f"https://www.freelancer.com/projects/{pid}"
 
-                        # Parse budget
+                        # Currency and budget validation
                         b_info = p.get("budget", {})
-                        min_b = b_info.get("minimum", 0)
-                        max_b = b_info.get("maximum", 0)
-                        curr = p.get("currency", {}).get("code", "USD")
+                        min_b = float(b_info.get("minimum") or 0)
+                        max_b = float(b_info.get("maximum") or 0)
+                        curr = str(p.get("currency", {}).get("code", "USD")).upper()
 
                         budget_str = f"{min_b:,.0f} - {max_b:,.0f} {curr}" if max_b else f"{min_b:,.0f} {curr}"
 
@@ -148,6 +148,10 @@ class UpworkSniper:
                             project_id=pid,
                         )
 
+                        # Filter out spam, agency pitches, and micro-budget gigs
+                        if not self._is_legitimate_high_roi_gig(gig, min_b, max_b, curr):
+                            continue
+
                         if gig.title:
                             new_gigs.append(gig)
                             self._seen_ids.add(pid)
@@ -158,6 +162,43 @@ class UpworkSniper:
 
         self._save_seen_cache()
         return new_gigs
+
+    def _is_legitimate_high_roi_gig(self, gig: FreelanceGig, min_b: float, max_b: float, curr: str) -> bool:
+        """
+        Strictly filters out agency sales spam, fake co-founder ads, and micro-penny tasks.
+        Requires genuine Python, Web Scraping, Data Processing, or API automation requirements.
+        """
+        full_text = f"{gig.title} {gig.description}".lower()
+
+        # 1. Blocked spam / agency pitch phrases
+        blocked_phrases = self._upwork_cfg.get("blocked_gig_phrases", [])
+        if any(bp.lower() in full_text for bp in blocked_phrases):
+            return False
+
+        # 2. Must contain concrete technical / data / automation intent
+        must_contain = self._upwork_cfg.get("must_contain_one_of", [])
+        skills_text = " ".join(gig.skills).lower()
+        if not any(kw.lower() in full_text or kw.lower() in skills_text for kw in must_contain):
+            return False
+
+        # 3. Currency conversion to USD to check minimum threshold
+        val = max_b if max_b > 0 else min_b
+        curr_upper = curr.upper()
+        if curr_upper == "INR":
+            usd_equiv = val / 86.0
+        elif curr_upper in ("EUR", "GBP"):
+            usd_equiv = val * 1.1
+        elif curr_upper in ("AUD", "CAD"):
+            usd_equiv = val * 0.7
+        else:
+            usd_equiv = val
+
+        # Minimum USD value check (e.g. at least $80 USD)
+        min_usd = float(self._upwork_cfg.get("min_budget_fixed_usd", 80))
+        if usd_equiv < min_usd:
+            return False
+
+        return True
 
     def process_and_alert(self, gig: FreelanceGig) -> None:
         """Generates AI proposal and sends an instant Telegram alert."""

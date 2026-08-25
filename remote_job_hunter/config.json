@@ -22,8 +22,26 @@
             "ai llm developer langchain"
         ],
         "poll_interval_minutes": 15,
-        "min_budget_fixed_usd": 150,
-        "min_hourly_rate_usd": 30
+        "min_budget_fixed_usd": 100,
+        "min_hourly_rate_usd": 30,
+        "blocked_gig_phrases": [
+            "looking for founders", "looking for partners", "co-founder",
+            "seeking investors", "turnkey platform", "white label",
+            "we are an agency", "referral partner", "commission only",
+            "equity only", "revenue share", "unpaid", "crypto token",
+            "trading terminal", "prop firm founders", "forex/crypto brokers",
+            "fintech entrepreneurs", "affiliate", "multi-level",
+            "sales expert", "client acquisition", "cold calling",
+            "lead generation", "sales representative", "appointment setter",
+            "telemarketing", "social networking app", "dating app",
+            "crypto trading", "copy trading", "trading bot"
+        ],
+        "must_contain_one_of": [
+            "python", "scrap", "crawl", "extract", "csv", "excel", "pandas",
+            "etl", "api", "bot", "script", "clean", "parse", "convert",
+            "automate", "webhook", "database", "fastapi", "flask", "selenium",
+            "playwright", "beautifulsoup", "data processing", "sql"
+        ]
     },
 
     "_comment_rss_all": "Tutti i feed RSS disponibili su We Work Remotely — vengono filtrati in base alle aree selezionate",
