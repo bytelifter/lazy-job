@@ -19,7 +19,12 @@
             "web scraping python",
             "data processing pandas",
             "api integration python",
-            "ai llm developer langchain"
+            "ai llm developer langchain",
+            "copywriting content ai",
+            "translation italian english",
+            "data entry excel automation",
+            "product descriptions bulk",
+            "market research web scraping"
         ],
         "poll_interval_minutes": 15,
         "min_budget_fixed_usd": 100,
@@ -40,7 +45,10 @@
             "python", "scrap", "crawl", "extract", "csv", "excel", "pandas",
             "etl", "api", "bot", "script", "clean", "parse", "convert",
             "automate", "webhook", "database", "fastapi", "flask", "selenium",
-            "playwright", "beautifulsoup", "data processing", "sql"
+            "playwright", "beautifulsoup", "data processing", "sql",
+            "copywrit", "content", "translat", "proofread", "transcrib",
+            "blog", "seo", "article", "catalog", "research", "summary",
+            "writer", "writing", "document", "lead"
         ]
     },
 
@@ -259,6 +267,22 @@
             "cron", "scheduling", "zapier", "n8n",
             "airflow", "orchestration", "pipeline",
             "bot development", "chatbot"
+        ],
+        "AI Copywriting & Content Automation": [
+            "copywriter", "copywriting", "content writer", "content writing",
+            "seo writer", "blog writer", "article writer", "product descriptions",
+            "technical writer", "ghostwriting", "newsletter writer",
+            "content specialist", "marketing copywriter", "bulk writing"
+        ],
+        "Translation & Localization": [
+            "translation", "translator", "localization", "localize",
+            "italian translator", "english translator", "subtitling",
+            "transcription", "proofreading", "proofreader", "linguist"
+        ],
+        "E-Commerce & Catalog Automation": [
+            "product catalog", "shopify", "woocommerce", "product listing",
+            "listing optimization", "catalog management", "inventory data",
+            "bulk upload", "product management", "e-commerce data"
         ]
     },
 
@@ -272,6 +296,16 @@
             "weight": 30,
             "keywords": ["data cleaning", "csv", "excel automation", "data entry", "spreadsheet", "pandas", "data pipeline", "etl", "data processing", "format conversion", "pdf parsing", "json processing", "document processing", "text extraction"],
             "strategy": "Pandas / Openpyxl script to automatically clean, parse, and reformat batches in seconds"
+        },
+        "ai_content_and_copywriting": {
+            "weight": 30,
+            "keywords": ["copywriter", "copywriting", "content writer", "article", "blog", "seo writing", "product descriptions", "bulk content", "content creation", "newsletter", "editing", "proofreading"],
+            "strategy": "Local LLM prompt pipeline to generate, format, and SEO-optimize batch content in minutes"
+        },
+        "translation_and_localization": {
+            "weight": 25,
+            "keywords": ["translation", "translator", "localization", "subtitling", "transcription", "multilingual", "proofread", "italian translation", "english translation"],
+            "strategy": "Whisper AI + LLM batch translation with automated quality checks and schema preservation"
         },
         "api_sync_and_integrations": {
             "weight": 25,

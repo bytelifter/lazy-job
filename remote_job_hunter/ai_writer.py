@@ -403,18 +403,29 @@ Answer:"""
         company: str,
         matched_skills: list[str],
     ) -> str:
-        """Fallback dynamic template cover letter with senior contractor tone."""
+        """Fallback dynamic template cover letter adapting to tech, content, and translation roles."""
         name = candidate.get("full_name", "Samuele Columbu")
         comp = company if company and company != "N/A" else "the Hiring Team"
-        skills_str = ", ".join(matched_skills[:5]) if matched_skills else "Python, API automation, and data pipelines"
+        title_lower = job_title.lower()
+
+        if any(w in title_lower for w in ("copywrit", "content", "writer", "article", "blog", "seo")):
+            specialty_p1 = f"With a strong foundation in English (C1/CAE), technical research, and AI-assisted editorial workflows, I specialize in producing high-quality, engaging, and well-researched content with rapid delivery."
+            specialty_p2 = f"I focus on high-impact deliverables: structured research, SEO optimization, and streamlined content creation pipelines with high autonomy. I get up to speed quickly with your brand voice and deliver immediate value."
+        elif any(w in title_lower for w in ("translat", "localiz", "proofread", "subtitl")):
+            specialty_p1 = f"With native Italian fluency and C1 Advanced English (CAE), alongside automated translation quality workflows, I specialize in delivering accurate, culturally nuanced, and polished localized content."
+            specialty_p2 = f"I ensure consistent tone, precise terminology, and fast turnaround for multi-market projects with meticulous attention to detail."
+        else:
+            skills_str = ", ".join(matched_skills[:5]) if matched_skills else "Python, API automation, and data pipelines"
+            specialty_p1 = f"With a strong background in {skills_str}, I specialize in building automated, reliable, and maintainable systems for distributed teams."
+            specialty_p2 = f"I focus on high-impact deliverables: developing automated data pipelines, orchestrating API integrations, and streamlining backend workflows with high autonomy and clean architecture."
 
         return f"""Dear {comp},
 
-I am applying for the {job_title} position as an independent contractor. With a strong background in {skills_str}, I specialize in building automated, reliable, and maintainable systems for distributed teams.
+I am applying for the {job_title} position as an independent contractor. {specialty_p1}
 
-I focus on high-impact deliverables: developing automated data pipelines, orchestrating API integrations, and streamlining backend workflows with high autonomy and clean architecture. I get up to speed quickly with existing codebases and deliver immediate value.
+{specialty_p2}
 
-I work comfortably across global time zones and am available for immediate contract engagements. I would welcome the opportunity to discuss how I can support {comp}'s technical milestones.
+I work comfortably across global time zones and am available for immediate contract engagements. I would welcome the opportunity to discuss how I can support {comp}'s upcoming milestones.
 
 Best regards,
 {name}
