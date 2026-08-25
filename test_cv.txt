@@ -1,0 +1,27 @@
+CURRICULUM VITAE — Test Profile
+
+SUMMARY
+Professionista con 4 years of experience in Python development, data analysis, 
+and workflow automation. Specializzato in backend scripting, data processing pipelines 
+e API integration per clienti internazionali.
+
+COMPETENZE TECNICHE
+- Linguaggi: Python, SQL, JavaScript, Bash
+- Librerie: Pandas, NumPy, Requests, BeautifulSoup, Scrapy, Selenium
+- Database: PostgreSQL, MySQL, MongoDB, Redis
+- Frameworks: Flask, FastAPI, Django
+- Tools: Git, Docker, Linux, Excel, Power BI
+- Cloud: AWS, GCP
+- Altro: REST API, JSON, XML, CSV, ETL, Web Scraping, Automation, CI/CD
+
+ESPERIENZA PROFESSIONALE
+- Data Operations Contractor (2022-presente): Automazione report periodici, 
+  pulizia dataset, elaborazione flussi CSV/Excel per clienti enterprise.
+- Freelance Web Scraper (2020-2022): Estrazione cataloghi e-commerce, 
+  monitoraggio prezzi, lead generation tramite script schedulati.
+- Junior Data Analyst (2019-2020): Generazione report, data visualization, 
+  analisi dati con Pandas e Tableau.
+
+LINGUE
+- Italiano: Madrelingua
+- Inglese: C1 (Advanced)

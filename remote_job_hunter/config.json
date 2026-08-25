@@ -1,0 +1,268 @@
+{
+    "api_endpoints": {
+        "remotive": "https://remotive.com/api/remote-jobs",
+        "himalayas": "https://himalayas.app/jobs/api/search",
+        "jobicy": "https://jobicy.com/api/v2/remote-jobs"
+    },
+
+    "_comment_rss_all": "Tutti i feed RSS disponibili su We Work Remotely — vengono filtrati in base alle aree selezionate",
+    "rss_feeds_all": {
+        "wwr_programming":    "https://weworkremotely.com/categories/remote-programming-jobs.rss",
+        "wwr_data":           "https://weworkremotely.com/categories/remote-data-analysts-jobs.rss",
+        "wwr_devops":         "https://weworkremotely.com/categories/remote-devops-sysadmin-jobs.rss",
+        "wwr_design":         "https://weworkremotely.com/categories/remote-design-jobs.rss",
+        "wwr_marketing":      "https://weworkremotely.com/categories/remote-marketing-jobs.rss",
+        "wwr_finance":        "https://weworkremotely.com/categories/remote-finance-accounting-jobs.rss",
+        "wwr_customer":       "https://weworkremotely.com/categories/remote-customer-support-jobs.rss",
+        "wwr_management":     "https://weworkremotely.com/categories/remote-management-executive-jobs.rss",
+        "wwr_copywriting":    "https://weworkremotely.com/categories/remote-copywriting-jobs.rss",
+        "wwr_product":        "https://weworkremotely.com/categories/remote-product-jobs.rss",
+        "wwr_sales":          "https://weworkremotely.com/categories/remote-sales-jobs.rss",
+        "wwr_all":            "https://weworkremotely.com/remote-jobs.rss"
+    },
+
+    "_comment_areas": "Selectable job areas mapping to API-specific parameters",
+    "job_areas": {
+        "IT / Software Development": {
+            "remotive_category": "software-development",
+            "jobicy_tag": "python",
+            "himalayas_keywords": ["python developer", "backend developer", "software engineer"],
+            "wwr_feeds": ["wwr_programming"]
+        },
+        "IT / Artificial Intelligence & ML": {
+            "remotive_category": "artificial-intelligence",
+            "jobicy_tag": "ai",
+            "himalayas_keywords": ["machine learning", "AI engineer", "LLM"],
+            "wwr_feeds": ["wwr_programming"]
+        },
+        "IT / DevOps & Cloud": {
+            "remotive_category": "devops",
+            "jobicy_tag": "devops",
+            "himalayas_keywords": ["devops engineer", "cloud engineer", "infrastructure"],
+            "wwr_feeds": ["wwr_devops"]
+        },
+        "IT / Information Technology": {
+            "remotive_category": "information-technology",
+            "jobicy_tag": "tech",
+            "himalayas_keywords": ["IT support", "system administrator", "sysadmin"],
+            "wwr_feeds": ["wwr_devops"]
+        },
+        "Data & Analytics": {
+            "remotive_category": "data",
+            "jobicy_tag": "data",
+            "himalayas_keywords": ["data analyst", "data engineer", "business intelligence"],
+            "wwr_feeds": ["wwr_data"]
+        },
+        "Design & UX": {
+            "remotive_category": "design",
+            "jobicy_tag": "design",
+            "himalayas_keywords": ["UX designer", "UI designer", "product designer"],
+            "wwr_feeds": ["wwr_design"]
+        },
+        "Product Management": {
+            "remotive_category": "product",
+            "jobicy_tag": "product",
+            "himalayas_keywords": ["product manager", "product owner"],
+            "wwr_feeds": ["wwr_product"]
+        },
+        "Project Management": {
+            "remotive_category": "project-management",
+            "jobicy_tag": "management",
+            "himalayas_keywords": ["project manager", "scrum master", "agile"],
+            "wwr_feeds": ["wwr_management"]
+        },
+        "Marketing & Growth": {
+            "remotive_category": "marketing",
+            "jobicy_tag": "marketing",
+            "himalayas_keywords": ["digital marketing", "SEO", "growth hacker"],
+            "wwr_feeds": ["wwr_marketing"]
+        },
+        "Sales & Business Development": {
+            "remotive_category": "sales",
+            "jobicy_tag": "sales",
+            "himalayas_keywords": ["sales representative", "account executive", "SDR"],
+            "wwr_feeds": ["wwr_sales"]
+        },
+        "Customer Support": {
+            "remotive_category": "customer-service",
+            "jobicy_tag": "support",
+            "himalayas_keywords": ["customer support", "customer success", "help desk"],
+            "wwr_feeds": ["wwr_customer"]
+        },
+        "Finance & Accounting": {
+            "remotive_category": "finance",
+            "jobicy_tag": "finance",
+            "himalayas_keywords": ["accountant", "finance analyst", "bookkeeper"],
+            "wwr_feeds": ["wwr_finance"]
+        },
+        "Writing & Content": {
+            "remotive_category": "writing",
+            "jobicy_tag": "writing",
+            "himalayas_keywords": ["copywriter", "content writer", "technical writer"],
+            "wwr_feeds": ["wwr_copywriting"]
+        },
+        "Operations & Automation": {
+            "remotive_category": "operations",
+            "jobicy_tag": "operations",
+            "himalayas_keywords": ["operations manager", "workflow automation", "process automation"],
+            "wwr_feeds": ["wwr_programming", "wwr_data"]
+        },
+        "All Areas": {
+            "remotive_category": null,
+            "jobicy_tag": null,
+            "himalayas_keywords": ["python contractor", "data analyst freelance", "automation contractor"],
+            "wwr_feeds": ["wwr_programming", "wwr_data", "wwr_devops"]
+        }
+    },
+
+    "default_user_location": "Italy",
+
+    "geographic_regions": {
+        "worldwide_terms": [
+            "worldwide", "anywhere", "global", "remote", "any", "no restriction", "work from anywhere", "everywhere", "all", "open"
+        ],
+        "regions": {
+            "europe": [
+                "europe", "eu", "emea", "european union", "uk", "united kingdom", "great britain", "england",
+                "italy", "italia", "spain", "espana", "france", "germany", "deutschland", "netherlands", "holland",
+                "belgium", "switzerland", "austria", "sweden", "norway", "denmark", "finland", "poland", "portugal",
+                "ireland", "czech", "romania", "hungary", "greece", "bulgaria", "croatia", "slovakia", "slovenia",
+                "estonia", "latvia", "lithuania", "cyprus", "malta", "iceland", "luxembourg"
+            ],
+            "north_america": [
+                "north america", "usa", "us", "united states", "america", "canada", "mexico"
+            ],
+            "latin_america": [
+                "latin america", "latam", "south america", "brazil", "argentina", "colombia", "chile", "peru"
+            ],
+            "asia_pacific": [
+                "asia", "pacific", "apac", "australia", "new zealand", "india", "japan", "singapore", "philippines", "vietnam"
+            ]
+        }
+    },
+
+    "search_keywords": [
+        "python contractor",
+        "data analyst freelance",
+        "automation contractor",
+        "web scraping",
+        "data processing",
+        "workflow automation",
+        "API integration",
+        "ETL pipeline",
+        "data migration",
+        "report automation"
+    ],
+    "min_match_score": 40,
+    "fetch_timeout_seconds": 15,
+    "max_retries": 3,
+    "jobicy_count": 50,
+    "himalayas_limit": 50,
+
+    "blocked_keywords": [
+        "ibrido", "hybrid", "on-site", "in sede", "in ufficio",
+        "stage non retribuito", "unpaid internship", "unpaid",
+        "full-time employee", "dipendente fisso",
+        "must relocate", "relocation required",
+        "onsite only", "office-based", "in-office",
+        "no remote", "not remote"
+    ],
+
+    "contractor_keywords": [
+        "contractor", "freelance", "freelancer", "contract",
+        "b2b", "project-based", "project based",
+        "part-time", "part_time", "parttime",
+        "independent contractor", "1099",
+        "consulting", "consultant",
+        "temporary", "temp position",
+        "fixed-term", "fixed term",
+        "per-project", "per project",
+        "hourly", "daily rate",
+        "statement of work", "sow"
+    ],
+
+    "contractor_type_values": [
+        "contract", "contractor", "freelance",
+        "part_time", "part-time", "temporary"
+    ],
+
+    "target_sectors": {
+        "Data Operations & Analysis": [
+            "data analyst", "data analysis", "data operations",
+            "report generation", "reporting", "data entry",
+            "data processing", "csv", "excel", "spreadsheet",
+            "data cleaning", "data cleansing", "dataset",
+            "business intelligence", "bi analyst", "tableau",
+            "power bi", "google sheets", "data visualization",
+            "pandas", "etl", "data pipeline"
+        ],
+        "Web Scraping & Data Collection": [
+            "web scraping", "web scraper", "data scraping",
+            "data extraction", "data mining", "data collection",
+            "lead generation", "price monitoring", "catalog",
+            "crawling", "crawler", "beautifulsoup", "scrapy",
+            "selenium", "playwright", "puppeteer"
+        ],
+        "Content Migration & File Parsing": [
+            "content migration", "data migration", "file parsing",
+            "file conversion", "format conversion", "xml parsing",
+            "json processing", "document processing",
+            "pdf parsing", "text extraction", "ocr",
+            "database migration", "cms migration",
+            "data transformation", "data structuring"
+        ],
+        "Workflow Automation & API Integration": [
+            "workflow automation", "process automation",
+            "api integration", "api development",
+            "task automation", "rpa", "robotic process",
+            "backend automation", "script", "scripting",
+            "cron", "scheduling", "zapier", "n8n",
+            "airflow", "orchestration", "pipeline",
+            "bot development", "chatbot"
+        ]
+    },
+
+    "high_value_indicators": {
+        "hourly_min_usd": 40,
+        "daily_min_usd": 300,
+        "annual_min_usd": 70000,
+        "keywords": [
+            "competitive salary", "competitive compensation",
+            "well-compensated", "high-paying", "top rate",
+            "premium rate", "above market", "above average",
+            "senior rate", "attractive compensation",
+            "negotiable rate", "excellent compensation"
+        ],
+        "salary_patterns": [
+            "\\$\\d{2,3}/h", "\\$\\d{2,3}\\s*/\\s*h",
+            "\\$\\d{2,3}\\s*per\\s*hour",
+            "\\$\\d{3,4}\\s*/\\s*day", "\\$\\d{3,4}\\s*per\\s*day",
+            "€\\d{2,3}/h", "€\\d{2,3}\\s*per\\s*hour"
+        ]
+    },
+
+    "known_skills": [
+        "python", "sql", "pandas", "numpy", "excel",
+        "git", "api", "rest", "json", "xml", "csv",
+        "selenium", "scrapy", "beautifulsoup", "requests",
+        "flask", "fastapi", "django", "automation",
+        "web scraping", "data analysis", "etl",
+        "aws", "gcp", "azure", "docker", "linux",
+        "bash", "powershell", "javascript", "typescript",
+        "react", "node.js", "mongodb", "postgresql",
+        "mysql", "redis", "celery", "airflow",
+        "tableau", "power bi", "google sheets",
+        "jira", "confluence", "slack", "zapier",
+        "machine learning", "nlp", "tensorflow",
+        "pytorch", "scikit-learn", "matplotlib",
+        "pdfplumber", "openpyxl", "regex",
+        "html", "css", "php", "ruby", "java",
+        "c#", ".net", "go", "rust", "scala",
+        "spark", "hadoop", "kafka", "rabbitmq",
+        "graphql", "soap", "websocket",
+        "ci/cd", "github actions", "jenkins",
+        "terraform", "kubernetes", "ansible"
+    ],
+
+    "output_csv_path": "results/job_matches.csv"
+}
