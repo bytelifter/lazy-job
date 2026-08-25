@@ -290,37 +290,58 @@
         "scraping_and_extraction": {
             "weight": 35,
             "keywords": ["web scraping", "scraping", "crawler", "crawling", "data extraction", "data mining", "scrape", "selenium", "playwright", "beautifulsoup", "scrapy", "extract data", "catalog extraction", "price monitoring", "lead collection"],
-            "strategy": "Python script (Playwright/Scrapy) + scheduled cron job to extract data automatically"
+            "strategy": "Python script (Playwright/Scrapy) to extract data and dump to CSV/Excel",
+            "toolstack": ["Playwright Python", "BeautifulSoup4", "Pandas", "curl_cffi"],
+            "recipe": "Use Playwright headless browser to bypass dynamic JS, extract structured tables, and save via pandas.to_csv()"
         },
         "data_processing_and_etl": {
             "weight": 30,
             "keywords": ["data cleaning", "csv", "excel automation", "data entry", "spreadsheet", "pandas", "data pipeline", "etl", "data processing", "format conversion", "pdf parsing", "json processing", "document processing", "text extraction"],
-            "strategy": "Pandas / Openpyxl script to automatically clean, parse, and reformat batches in seconds"
+            "strategy": "Pandas / Openpyxl script to automatically clean, parse, and reformat batches in seconds",
+            "toolstack": ["Pandas", "Openpyxl", "PyReadstat", "DuckDB"],
+            "recipe": "Load messy CSV/Excel/SPSS into Pandas, apply regex string cleaning & drop_duplicates, export clean output in 2 seconds"
         },
         "ai_content_and_copywriting": {
             "weight": 30,
             "keywords": ["copywriter", "copywriting", "content writer", "article", "blog", "seo writing", "product descriptions", "bulk content", "content creation", "newsletter", "editing", "proofreading"],
-            "strategy": "Local LLM prompt pipeline to generate, format, and SEO-optimize batch content in minutes"
+            "strategy": "Local LLM (Qwen-2.5) prompt loop to generate, format, and SEO-optimize batch content in minutes",
+            "toolstack": ["Ollama (qwen2.5-coder:7b / qwen2.5:1.5b)", "Markdownify", "Python docx exporter"],
+            "recipe": "Write a 10-line Python loop calling local Ollama with your keyword list, generate 20 articles with SEO headers in 3 minutes"
         },
         "translation_and_localization": {
+            "weight": 30,
+            "keywords": ["translation", "translator", "localization", "subtitling", "transcription", "multilingual", "proofread", "italian translation", "english translation", "spanish", "french", "german", "localize", "linguist", "document translation"],
+            "strategy": "Whisper AI + DeepL / LLM batch translation with automated quality checks and schema preservation",
+            "toolstack": ["OpenAI Whisper (Local)", "DeepL API (Free tier)", "Ollama LLM", "SubtitleEdit"],
+            "recipe": "For audio: run Whisper locally to get instant timestamped SRT/VTT. For text: run batch translation through DeepL/LLM preserving HTML/Markdown"
+        },
+        "ecommerce_and_catalog": {
             "weight": 25,
-            "keywords": ["translation", "translator", "localization", "subtitling", "transcription", "multilingual", "proofread", "italian translation", "english translation"],
-            "strategy": "Whisper AI + LLM batch translation with automated quality checks and schema preservation"
+            "keywords": ["product catalog", "shopify", "woocommerce", "product listing", "listing optimization", "catalog management", "inventory data", "bulk upload", "product management", "e-commerce data"],
+            "strategy": "Python script generating product copy and formatting bulk Shopify/WooCommerce CSV import files",
+            "toolstack": ["Python Requests", "Shopify API", "Openpyxl", "Pillow (image resize)"],
+            "recipe": "Feed product names to LLM for SEO descriptions, compile into standard Shopify CSV template for 1-click bulk import"
         },
         "api_sync_and_integrations": {
             "weight": 25,
             "keywords": ["api integration", "api sync", "zapier", "n8n", "make.com", "webhook", "rest api", "task automation", "workflow automation", "cron", "scheduled script"],
-            "strategy": "FastAPI webhook handler / n8n workflow to sync APIs 24/7 without manual intervention"
+            "strategy": "FastAPI webhook handler / n8n workflow to sync APIs 24/7 without manual intervention",
+            "toolstack": ["FastAPI", "n8n (Self-hosted)", "Requests", "APScheduler"],
+            "recipe": "Deploy a lightweight Python FastAPI webhook or n8n workflow to connect CRM/Payment/Database APIs automatically"
         },
         "ai_and_llm_agents": {
             "weight": 25,
             "keywords": ["llm", "langchain", "langflow", "openai", "ai agent", "chatbot", "prompt engineering", "automated responses", "text classification"],
-            "strategy": "LangChain / LLM pipeline to auto-generate outputs, summaries, or customer responses"
+            "strategy": "LangChain / LLM pipeline to auto-generate outputs, summaries, or customer responses",
+            "toolstack": ["LangChain", "LangFlow", "Ollama", "ChromaDB"],
+            "recipe": "Build a RAG pipeline or automated agent workflow connecting client documents to an LLM answering engine"
         },
         "qa_test_automation": {
             "weight": 20,
             "keywords": ["test automation", "qa automation", "synthetic monitoring", "automated testing", "e2e tests", "cypress", "selenium tests"],
-            "strategy": "Headless test suite executed automatically on CI/CD or schedule"
+            "strategy": "Headless test suite executed automatically on CI/CD or schedule",
+            "toolstack": ["Playwright Python", "Pytest", "GitHub Actions"],
+            "recipe": "Generate Pytest + Playwright test scripts covering all form clicks and assertions with automated HTML report"
         }
     },
 

@@ -217,6 +217,8 @@ class UpworkSniper:
         )
         gig.proposal = proposal
 
+        tool_hint = self._detect_toolstack(gig)
+
         # Dispatch alert to Telegram
         if self._notifier.is_configured:
             clean_proposal = proposal.replace("<", "&lt;").replace(">", "&gt;")
@@ -226,13 +228,33 @@ class UpworkSniper:
                 f"💼 <b>Project:</b> {clean_title}\n"
                 f"💵 <b>Budget:</b> <code>{price_str}</code>\n"
                 f"🌐 <b>Platform:</b> {gig.platform}\n"
-                f"🏷️ <b>Skills:</b> {', '.join(gig.skills[:5]) if gig.skills else 'Python, Automation'}\n\n"
+                f"🏷️ <b>Skills:</b> {', '.join(gig.skills[:5]) if gig.skills else 'Python, Automation'}\n"
+                f"🛠️ <b>Tool/AI da Usare:</b> <code>{tool_hint}</code>\n\n"
                 f"📝 <b>READY-TO-PASTE PROPOSAL:</b>\n"
                 f"<blockquote>{clean_proposal}</blockquote>\n\n"
                 f"🚀 <a href='{gig.url}'><b>Open Direct Gig Page & Submit Bid</b></a>"
             )
             self._notifier.send_message(msg)
             print("   ✅ Instant Telegram proposal dispatched!")
+
+    def _detect_toolstack(self, gig: FreelanceGig) -> str:
+        """Detects the best AI / Python toolstack to solve this specific gig in 15 mins."""
+        txt = f"{gig.title} {gig.description} {' '.join(gig.skills)}".lower()
+
+        if any(k in txt for k in ("scrap", "crawl", "extract", "selenium", "playwright")):
+            return "Playwright Python + BeautifulSoup4 + Pandas (Export CSV)"
+        elif any(k in txt for k in ("translat", "localiz", "subtitl", "italian", "english")):
+            return "DeepL API / Whisper (Audio) + Ollama Qwen-2.5"
+        elif any(k in txt for k in ("copywrit", "content", "article", "blog", "seo")):
+            return "Ollama Qwen-2.5-Coder + Python Markdown/Docx loop"
+        elif any(k in txt for k in ("csv", "excel", "clean", "pandas", "data processing", "etl")):
+            return "Pandas + Openpyxl + DuckDB (Clean & Reformat script)"
+        elif any(k in txt for k in ("shopify", "catalog", "woocommerce", "e-commerce")):
+            return "Shopify REST API + Openpyxl (Bulk CSV template)"
+        elif any(k in txt for k in ("api", "webhook", "zapier", "n8n", "automation")):
+            return "FastAPI (Python) / n8n Workflow + Requests"
+        else:
+            return "Python Script + Local Ollama LLM"
 
     def _save_gigs_csv(self, gigs: list[FreelanceGig]) -> str:
         """Saves processed gigs to a dedicated CSV file in results_gigs/."""
