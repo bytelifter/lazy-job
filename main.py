@@ -452,6 +452,17 @@ def main() -> None:
         total_fetched=total_fetched,
     )
 
+    # Telegram summary dispatch
+    from remote_job_hunter.telegram_notifier import TelegramNotifier
+    tg_notifier = TelegramNotifier(config)
+    if tg_notifier.is_configured and config.get("telegram_settings", {}).get("notify_on_matches", True):
+        tg_notifier.send_match_summary(
+            total_matched=len(results),
+            top_offers=results,
+            csv_path=str(full_csv_path) if "full_csv_path" in locals() else "",
+        )
+        print(f"\n  {GREEN}✓ Telegram summary alert & CSV sent to your Telegram chat!{RESET}")
+
     # ── Step 12: Automated & Assisted Application Assistant ──
     if results:
         print(f"\n{BOLD}🚀 AUTOMATED & ASSISTED APPLICATION DISPATCH{RESET}")

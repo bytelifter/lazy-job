@@ -323,14 +323,23 @@
         "sender_password": "your_app_password"
     },
 
+    "telegram_settings": {
+        "enabled": false,
+        "bot_token": "",
+        "chat_id": "",
+        "notify_on_matches": true,
+        "notify_on_applications": true
+    },
+
     "local_ai_settings": {
         "enabled": true,
         "gpu_vram_gb": 6,
         "provider": "auto",
         "ollama_url": "http://localhost:11434",
         "fast_model": "qwen2.5:1.5b",
-        "decision_model": "qwen2.5:7b",
+        "decision_model": "qwen2.5-coder:7b",
         "preferred_models": [
+            "qwen2.5-coder:7b",
             "qwen2.5:7b",
             "llama3.1:8b",
             "qwen2.5:1.5b"

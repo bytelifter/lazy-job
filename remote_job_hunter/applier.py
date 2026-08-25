@@ -409,6 +409,9 @@ class WebFormDispatcher:
         )
 
 
+from .telegram_notifier import TelegramNotifier
+
+
 class ApplicationOrchestrator:
     """Coordinates batch application workflow for top matched jobs."""
 
@@ -417,6 +420,7 @@ class ApplicationOrchestrator:
         self._ai_writer = LocalAIWriter(config)
         self._email_applier = EmailDispatcher(config, self._ai_writer)
         self._web_applier = WebFormDispatcher(config, self._ai_writer)
+        self._telegram = TelegramNotifier(config)
         self._candidate: dict[str, Any] = config.get("candidate_profile", {})
 
     def process_applications(
@@ -465,6 +469,19 @@ class ApplicationOrchestrator:
 
             res.timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
             results.append(res)
+
+            # Send Telegram alert if configured
+            if self._telegram.is_configured:
+                self._telegram.send_application_alert(
+                    job_title=res.job_title,
+                    company=res.company,
+                    channel=res.channel,
+                    status=res.status,
+                    details=res.details,
+                    direct_link=res.direct_link,
+                    salary=offer.salary,
+                    cover_letter=res.cover_letter,
+                )
 
             # Print outcome
             status_badge = f"[{res.status}]"
