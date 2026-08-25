@@ -325,15 +325,15 @@
 
     "local_ai_settings": {
         "enabled": true,
+        "gpu_vram_gb": 6,
         "provider": "auto",
         "ollama_url": "http://localhost:11434",
+        "fast_model": "qwen2.5:1.5b",
+        "decision_model": "qwen2.5:7b",
         "preferred_models": [
             "qwen2.5:7b",
             "llama3.1:8b",
-            "qwen2.5:14b",
-            "mistral:7b",
-            "qwen2.5:1.5b",
-            "llama3.2:1b"
+            "qwen2.5:1.5b"
         ],
         "api_keys": {
             "groq_api_key": "",
