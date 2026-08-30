@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samuele Columbu - Digital Solutions & Real Estate Photography</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased">
+    
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-indigo-600">Samuele Columbu</span>
+                </div>
+                <div class="flex items-center space-x-8">
+                    <a href="#services" class="text-gray-600 hover:text-indigo-600 font-medium">Servizi</a>
+                    <a href="#portfolio" class="text-gray-600 hover:text-indigo-600 font-medium">Portfolio</a>
+                    <a href="#contact" class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 font-medium transition-colors">Contattami</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-12">
+        <div class="flex-1 text-center lg:text-left">
+            <h1 class="text-5xl font-extrabold tracking-tight text-gray-900 sm:text-6xl mb-6">
+                Trasformo le tue Idee in <span class="text-indigo-600">Asset Digitali</span>.
+            </h1>
+            <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0">
+                Dalla fotografia immobiliare di alta gamma che vende case più velocemente, alla creazione di siti web moderni e automazioni AI per il tuo business.
+            </p>
+            <div class="flex gap-4 justify-center lg:justify-start">
+                <a href="#contact" class="bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-indigo-700 transition-colors shadow-lg hover:shadow-xl">Richiedi Preventivo</a>
+                <a href="#portfolio" class="bg-white text-gray-900 px-8 py-3 rounded-lg text-lg font-medium border border-gray-200 hover:bg-gray-50 transition-colors">Vedi Portfolio</a>
+            </div>
+        </div>
+        <div class="flex-1">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Professional Workspace" class="rounded-2xl shadow-2xl object-cover h-[500px] w-full">
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">I Miei Servizi</h2>
+                <p class="mt-4 text-xl text-gray-600">Soluzioni end-to-end per far crescere la tua attività.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Service 1 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-xl transition-shadow">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Fotografia Immobiliare</h3>
+                    <p class="text-gray-600">Servizi fotografici professionali a Roma. Aumenta i click sui tuoi annunci immobiliari e vendi o affitta più velocemente con scatti che valorizzano gli spazi e la luce naturale.</p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-xl transition-shadow">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Sviluppo Siti Web</h3>
+                    <p class="text-gray-600">Landing pages, siti vetrina ed e-commerce veloci e moderni. Costruiti per convertire i visitatori in clienti e ottimizzati per apparire primi su Google (SEO).</p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-xl transition-shadow">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Soluzioni & Automazioni AI</h3>
+                    <p class="text-gray-600">Implementazione di workflow automatizzati e intelligenza artificiale per ottimizzare i processi aziendali, dal data scraping all'elaborazione automatica di documenti.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section id="portfolio" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Lavori Recenti</h2>
+                <p class="mt-4 text-xl text-gray-600">Alcuni esempi della qualità che offro.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="group relative rounded-2xl overflow-hidden cursor-pointer shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Real Estate Photography" class="w-full h-80 object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-8">
+                        <span class="text-indigo-400 font-semibold mb-2">Fotografia Immobiliare</span>
+                        <h3 class="text-2xl font-bold text-white">Villa Moderna — Roma Nord</h3>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="group relative rounded-2xl overflow-hidden cursor-pointer shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Web Development" class="w-full h-80 object-cover transform group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-8">
+                        <span class="text-indigo-400 font-semibold mb-2">Web Design & SEO</span>
+                        <h3 class="text-2xl font-bold text-white">Sito E-commerce B2B</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-20 bg-indigo-600">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-extrabold text-white sm:text-4xl mb-6">Pronto per iniziare?</h2>
+            <p class="text-xl text-indigo-100 mb-10">Parliamo del tuo progetto. Offro un preventivo gratuito e una consulenza senza impegno.</p>
+            <a href="mailto:contact@samuelecolumbu.com" class="inline-block bg-white text-indigo-600 px-10 py-4 rounded-xl text-xl font-bold shadow-xl hover:bg-gray-50 transition-colors">
+                Invia un'Email
+            </a>
+            <p class="mt-8 text-indigo-200">Oppure rispondi direttamente alla mail che ti ho inviato.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12 text-center">
+        <p>&copy; 2026 Samuele Columbu. Professionista Freelance.</p>
+        <div class="mt-4 space-x-4">
+            <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-white transition-colors">Termini e Condizioni</a>
+        </div>
+    </footer>
+
+</body>
+</html>

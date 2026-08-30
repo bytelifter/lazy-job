@@ -1,0 +1,187 @@
+{
+    "freelancer_gigs": {},
+    "outreach_leads": {
+        "info@dimensionecasagold.it": {
+            "name": "DimensioneCasa Gold | Agenzia Immobiliare Roma Est - Castelverde",
+            "email": "info@dimensionecasagold.it",
+            "phone": "",
+            "channel": "email",
+            "status": "contacted",
+            "timestamp": "2026-08-29T17:17:33.979738",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Messaggio inviato precedentemente in manuale/test_outreach.",
+                    "timestamp": "2026-08-29T17:17:33.979759"
+                }
+            ]
+        },
+        "393453454186": {
+            "name": "Nova Re Gruppo Immobiliare Ponte di Nona",
+            "email": "",
+            "phone": "393453454186",
+            "channel": "whatsapp",
+            "status": "contacted",
+            "timestamp": "2026-08-29T17:17:33.980227",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Messaggio inviato precedentemente in manuale/test_outreach.",
+                    "timestamp": "2026-08-29T17:17:33.980232"
+                }
+            ]
+        },
+        "rm1mn@tecnorete.it": {
+            "name": "Agenzia Immobiliare Tecnorete Roma Castelverde",
+            "email": "rm1mn@tecnorete.it",
+            "phone": "",
+            "channel": "email",
+            "status": "contacted",
+            "timestamp": "2026-08-29T17:17:33.980676",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Messaggio inviato precedentemente in manuale/test_outreach.",
+                    "timestamp": "2026-08-29T17:17:33.980680"
+                }
+            ]
+        },
+        "rmhb8@tecnocasa.it": {
+            "name": "Agenzia Immobiliare Tecnocasa Roma Ponte di Nona Colle del sole",
+            "email": "rmhb8@tecnocasa.it",
+            "phone": "",
+            "channel": "email",
+            "status": "contacted",
+            "timestamp": "2026-08-29T17:17:33.981269",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Messaggio inviato precedentemente in manuale/test_outreach.",
+                    "timestamp": "2026-08-29T17:17:33.981273"
+                }
+            ]
+        },
+        "rm1b8@tecnorete.it": {
+            "name": "Agenzia Immobiliare Tecnorete Roma Ponte Di Nona - Colle degli Abeti",
+            "email": "rm1b8@tecnorete.it",
+            "phone": "",
+            "channel": "email",
+            "status": "contacted",
+            "timestamp": "2026-08-29T17:17:33.981976",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Messaggio inviato precedentemente in manuale/test_outreach.",
+                    "timestamp": "2026-08-29T17:17:33.981981"
+                }
+            ]
+        },
+        "info@remax.it": {
+            "name": "RE/MAX Key House Group - Planimetrio",
+            "email": "info@remax.it",
+            "phone": "",
+            "channel": "email",
+            "status": "contacted",
+            "timestamp": "2026-08-29T17:17:33.982757",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Messaggio inviato precedentemente in manuale/test_outreach.",
+                    "timestamp": "2026-08-29T17:17:33.982761"
+                }
+            ]
+        },
+        "info@immobiliarecoppede.it": {
+            "name": "Gruppo Immobiliare Coppedè s.r.l. - Agenzia immobiliare Roma Parioli Pinciano Trieste",
+            "email": "info@immobiliarecoppede.it",
+            "phone": "",
+            "channel": "email",
+            "status": "contacted",
+            "timestamp": "2026-08-29T17:17:33.983542",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Messaggio inviato precedentemente in manuale/test_outreach.",
+                    "timestamp": "2026-08-29T17:17:33.983547"
+                }
+            ]
+        },
+        "ag.romapontedinona@professionecasa.it": {
+            "name": "Professionecasa Ponte di Nona",
+            "email": "ag.romapontedinona@professionecasa.it",
+            "phone": "",
+            "channel": "email",
+            "status": "contacted",
+            "timestamp": "2026-08-29T17:17:33.984227",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Messaggio inviato precedentemente in manuale/test_outreach.",
+                    "timestamp": "2026-08-29T17:17:33.984231"
+                }
+            ]
+        },
+        "info@vivererealestate.it": {
+            "name": "VIVERE Real Estate - Agenzia immobiliare Roma",
+            "email": "info@vivererealestate.it",
+            "phone": "",
+            "channel": "email",
+            "status": "contacted",
+            "timestamp": "2026-08-29T17:17:33.984672",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Messaggio inviato precedentemente in manuale/test_outreach.",
+                    "timestamp": "2026-08-29T17:17:33.984675"
+                }
+            ]
+        },
+        "ambrosiaimmobiliare@gmail.com": {
+            "name": "Ambrosia Immobiliare",
+            "email": "ambrosiaimmobiliare@gmail.com",
+            "phone": "",
+            "channel": "email",
+            "status": "contacted",
+            "timestamp": "2026-08-29T17:17:33.985125",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Messaggio inviato precedentemente in manuale/test_outreach.",
+                    "timestamp": "2026-08-29T17:17:33.985129"
+                }
+            ]
+        },
+        "06 7158 7043": {
+            "name": "RE/MAX House Dream",
+            "email": "",
+            "phone": "06 7158 7043",
+            "address": "Roma",
+            "channel": "whatsapp",
+            "status": "contacted",
+            "timestamp": "2026-08-30T00:24:25.570583",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Salve,\n\nSono il CMO di un'agenzia Software e Digitale leader nel settore.\nHo visitato il vostro sito web ed ho notato che risulta piuttosto datato, con una grafica semplice ma poco moderna, privo di funzionalità essenziali come l'interfaccia amichevole per gli utenti o un sistema di prenotazione che renderebbe l'esperienza online dei clienti più soddisfacente.\n\nCome agenzie immobiliari in una zona con molte altre concorrenti, è fondamentale avere una presenza digitale impressionante. Se il vostro sito risulta poco attraente e noioso per i visitatori potrebbe essere un problema.\nPer questo motivo, vorremmo proporre il nostro servizio di restyling estetico con l'aggiunta di un gestionale cloud che permette di monitorare e controllare a distanza tutti gli aspetti tecnici della vostra agenzia immobiliare.\n\nOffriamo la possibilità di avere una presenza web moderna, coinvolgente ed interattiva per catturare al meglio i clienti attuali e nuovi. La nostra soluzione include anche un servizio di manutenzione mensile che si occupa dei problemi tecnici in modo da non dovervi preoccupare delle varie problematiche tecnologiche.\n\nSiamo disponibili a discutere ulteriormente di come possiamo aiutarvi migliorare la vostra immagine digitale e aumentare il fatturato online.",
+                    "timestamp": "2026-08-30T00:24:25.570593"
+                }
+            ]
+        },
+        "06 9209 0865": {
+            "name": "Agenzia Immobiliare Tempocasa Roma - Bologna",
+            "email": "",
+            "phone": "06 9209 0865",
+            "address": "Roma",
+            "channel": "whatsapp",
+            "status": "contacted",
+            "timestamp": "2026-08-30T00:26:15.124060",
+            "history": [
+                {
+                    "role": "bot",
+                    "content": "Salve,\n\nSono il CMO di un'agenzia Software e Digitale di alto livello e recentemente ho visitato il vostro sito web. Devo dire che il layout sembra datato e potrebbe non essere più adeguato alle esigenze delle moderne agenzie immobiliari.\n\nInfatti, i siti moderni devono essere pensati per essere accessibili da dispositivi mobili, avere funzionalità di prenotazione o pre-acquisto online e dovrebbero avere un look che rifletta la vostra immagine aziendale. Il vostro sito sembra mancare di alcune di queste caratteristiche fondamentali.\n\nEcco un'occasione per rivalutare il proprio punto di forza, visto che i concorrenti stanno sempre più avanzando nella loro offerta tecnologica e non potete restare indietro!\n\nAbbiamo già aiutato altre agenzie in zona a migliorare la propria presenza online. Se siete interessati a rivoluzionare il vostro sito web, vi consiglio di contattarci per una discussione senza impegno e scoprire come possiamo trasformare la vostra immagine online.\n\nLa nostra soluzione prevede un intero gestionale cloud personalizzato con un abbonamento mensile che copre tutte le manutenzioni necessarie. Non vi dovete preoccupare di nulla, solo concentrarvi sul vostro business.",
+                    "timestamp": "2026-08-30T00:26:15.124069"
+                }
+            ]
+        }
+    }
+}

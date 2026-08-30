@@ -10,7 +10,7 @@ and cybersecurity. Experienced in building secure full-stack applications and au
 TECHNICAL SKILLS
 - Languages: Python, Java, C++, PHP, SQL, HTML, CSS, JavaScript, Bash
 - AI & Automation: LangChain, LangFlow, LLMs, Web Scraping, REST APIs, JSON, CSV, Automation, ETL
-- Networking & Security: Cisco CCNA 7, Vulnerability Analysis, Data Protection, Network Defense
+- Networking & Security: Vulnerability Analysis, Data Protection, Network Defense
 - Tools & Frameworks: Git/GitHub, Docker, Linux, MS Office, Google Workspace, FastAPI, Flask
 
 PROJECTS & EXPERIENCE

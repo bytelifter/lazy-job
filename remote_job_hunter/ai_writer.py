@@ -18,6 +18,7 @@ import re
 import subprocess
 import sys
 import time
+from pathlib import Path
 from typing import Any
 
 import requests
@@ -311,53 +312,93 @@ Cover Letter:"""
 
         return self._generate_template_cover_letter(candidate, job_title, company, matched_skills)
 
-    def generate_upwork_proposal(
+    def generate_unique_proposal(
         self,
         candidate: dict[str, Any],
         gig_title: str,
         gig_description: str,
-        budget: str = "",
-        skills: list[str] | None = None,
+        council_data: dict[str, Any],
     ) -> str:
         """
-        Generates a winning Upwork freelance proposal tailored to the client's gig post.
+        Generates a 100% unique proposal using random approach seeds, shifting temperatures,
+        and strict blacklist checking to avoid LLM convergence (templates).
         """
-        skills_str = ", ".join(skills[:5]) if skills else "Python, Web Scraping, Data Automation, APIs"
+        import random
+        import re
+
+        # Approach seeds force the LLM to start from a different angle every time
+        approach_seeds = [
+            "Start by bluntly pointing out a technical challenge they missed.",
+            "Start by offering a very specific 1-day deliverable to prove trust.",
+            "Start by explaining exactly which Python library solves their problem.",
+            "Start with a highly technical question about their data schema.",
+            "Start by stating you have built something very similar recently."
+        ]
+        chosen_seed = random.choice(approach_seeds)
+
+        # Dynamic temperature to force variance
+        dynamic_temp = random.uniform(0.45, 0.85)
+
+        # Blacklisted cliche phrases
+        blacklist = [
+            r"i can build a reliable", r"python pipeline", r"robust error handling",
+            r"dear hiring manager", r"i am writing to apply", r"in today's fast-paced",
+            r"delve into", r"seamless integration"
+        ]
 
         system = (
-            "You are an elite Python freelancer on Upwork writing high-converting, concise client proposals. "
-            "Never use fluff, cliches, or generic intros. Start directly by addressing their technical problem."
+            "You are an elite, highly technical Python freelancer on Upwork. "
+            "Write a sharp, 120-word proposal. NO generic intros. NO fluff."
         )
-        prompt = f"""Write a sharp, 120-word freelance proposal for this Upwork gig:
-Gig Title: {gig_title}
-Client Job Post: {gig_description[:600]}
-Candidate Skills: {skills_str}
-Candidate Name: {candidate.get('full_name', 'Samuele Columbu')}
-GitHub: https://github.com/bytelifter
 
-Rules:
-1. First line: Acknowledge the exact project objective without saying 'Hi, I saw your post'.
-2. Explain the exact technical approach in Python ({skills_str}) and error handling.
-3. State timeline: ready to deliver clean, documented code within 24-48 hours.
-4. Mention readiness to run a quick test or share sample outputs.
-5. End with candidate name and GitHub link.
+        specialist_text = council_data.get("specialist", "")
+        pricing_text = council_data.get("pricing", "")
+        timeline_text = council_data.get("timeline", "")
+
+        prompt = f"""Write a unique proposal for this gig:
+Title: {gig_title}
+Description: {gig_description[:500]}
+
+MANDATORY INSTRUCTION: {chosen_seed}
+
+Inject this technical detail seamlessly: {specialist_text}
+Mention pricing/timeline subtly: {pricing_text}, {timeline_text}
+
+Candidate Name: {candidate.get('full_name', 'Samuele Columbu')}
+GitHub: {candidate.get('github_url', 'https://github.com/bytelifter')}
 
 Proposal:"""
 
-        resp = self._call_llm(prompt, system_prompt=system, max_tokens=250, model_override=self._fast_model)
-        if resp:
-            return resp
+        for attempt in range(3):
+            # Temporarily override temperature
+            old_temp = self._temperature
+            self._temperature = dynamic_temp
+            resp = self._call_llm(prompt, system_prompt=system, max_tokens=250, model_override=self._decision_model)
+            self._temperature = old_temp
 
+            if resp:
+                # Check blacklist
+                is_clean = True
+                for b_phrase in blacklist:
+                    if re.search(b_phrase, resp, re.IGNORECASE):
+                        print(f"⚠️ [Anti-Template] Blacklisted phrase '{b_phrase}' detected. Regenerating...")
+                        is_clean = False
+                        break
+                
+                if is_clean:
+                    return resp
+
+            # Increase chaos for next attempt
+            dynamic_temp = min(1.0, dynamic_temp + 0.1)
+
+        # Ultimate dynamic fallback (if all 3 attempts hit the blacklist)
+        print("⚠️ [Anti-Template] LLM failed to avoid cliches. Using dynamic string builder.")
         return (
-            f"Hi,\n\n"
-            f"I can build a reliable Python automation solution for your '{gig_title}' project.\n\n"
-            f"My Approach:\n"
-            f"• Automated Python pipeline ({skills_str}) handling data extraction, cleaning, and export.\n"
-            f"• Robust error handling, rate-limiting, and schema validation.\n"
-            f"• Clean, self-documenting code with immediate setup instructions.\n\n"
-            f"I am ready to deliver the complete solution within 24-48 hours. Feel free to check my public repositories at https://github.com/bytelifter or message me to discuss the details.\n\n"
-            f"Best regards,\n"
-            f"{candidate.get('full_name', 'Samuele Columbu')}"
+            f"Regarding the {gig_title} project:\n\n"
+            f"{specialist_text}\n\n"
+            f"I operate with full transparency. {timeline_text} and {pricing_text}.\n\n"
+            f"Check my recent code at {candidate.get('github_url', 'https://github.com/bytelifter')}.\n"
+            f"- {candidate.get('full_name', 'Samuele Columbu')}"
         )
 
     def answer_form_question(

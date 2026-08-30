@@ -22,6 +22,12 @@ import sys
 from pathlib import Path
 from typing import Any
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # Force UTF-8 on stdout/stderr for Windows (emoji & box drawing characters support)
 if sys.platform == "win32":
     try:
@@ -101,20 +107,6 @@ def load_config() -> dict[str, Any]:
 
     with config_path.open("r", encoding="utf-8") as f:
         config: dict[str, Any] = json.load(f)
-
-    # Check for optional config.local.json to override secrets
-    local_config_path = config_path.parent / "config.local.json"
-    if local_config_path.exists():
-        try:
-            with local_config_path.open("r", encoding="utf-8") as lf:
-                local_data = json.load(lf)
-                for k, v in local_data.items():
-                    if isinstance(v, dict) and isinstance(config.get(k), dict):
-                        config[k].update(v)
-                    else:
-                        config[k] = v
-        except Exception:
-            pass
 
     return config
 

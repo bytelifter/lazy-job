@@ -1,71 +1,49 @@
-# LazyJob (LazyJobHunter) 🎯
+# 🤖 LazyJobHunter V10 - The Virtual Company Empire
 
-Automated CLI batch pipeline designed for discovering, filtering, and scoring **high-value remote contractor and freelance positions**.
+Benvenuto nella versione definitiva di LazyJobHunter. Questo sistema è progettato per generare income passivo e semi-passivo tramite l'automazione intelligente e la ricerca di clienti.
 
----
+## L'Architettura
 
-## ✨ Features
+Il sistema si divide in due grandi anime:
 
-- **Interactive CV Ingestion**: Parses your CV (`.pdf`, `.txt`, `.json`) using regex pattern matching and auto-extracts technical skills and years of experience.
-- **Multi-Source Parallel Aggregation**: Concurrently queries **Remotive**, **Himalayas**, **Jobicy**, and **We Work Remotely (RSS)** with retry & exponential backoff.
-- **Target Area Selection**: Select specific job fields (e.g. *Software Development*, *AI & ML*, *DevOps*, *Data & Analytics*, *Design*, *Marketing*, or *All Areas*).
-- **Geographic Compatibility Filter**: Automatically filters out jobs geographically restricted to regions outside your location (e.g., permits *Worldwide*, *Europe/EU*, or *Italy*, while excluding *US-Only* or *LATAM-Only* if you're in Europe).
-- **Hard Contractor Filtering**: Strictly includes Contractor / Freelance / B2B positions, discarding permanent on-site/hybrid listings.
-- **Smart Composite Scoring**: Scores jobs from 0 to 100 based on:
-  - Skill overlap (0–60 pts)
-  - Sector relevance (0–20 pts)
-  - High-value budget/salary indicators (0–20 pts)
-- **Automatic De-duplication**: Scans previous search outputs to exclude already discovered listings.
-- **Local AI Cover Letter & Q&A Engine**: Lightweight AI model engine (~1 GB VRAM / Ollama / GGUF / dynamic template fallback) that writes tailored, role-specific cover letters and answers ATS form questions.
-- **Automated & Assisted Application Dispatch**:
-  - Direct Email dispatch via SMTP with attached PDF resume and tailored AI cover letter.
-  - Standard ATS web form auto-filling (Lever, Greenhouse, Workable) via **Playwright**.
-  - **Anti-Bot / CAPTCHA & Custom Question Detection**: Gracefully detects Cloudflare Turnstile, reCAPTCHA, and custom questions, generating direct 1-click links and ready-to-paste tailored pitches.
-  - **Application History Log**: Exports `results/application_log_YYYYMMDD_HHMMSS.csv` tracking all dispatched applications and manual links.
-- **Export & Terminal Reporting**:
-  - Timestamped Excel-compatible CSV output (`results/job_matches_YYYYMMDD_HHMMSS.csv`)
-  - ANSI colored terminal report with statistics breakdown
+### 1. I Cacciatori (Job & Lead Hunters)
+Scansionano continuamente il web per trovare clienti disposti a pagare:
+- **Freelancer Sniper (`freelancer_sniper.py`)**: Bot per auto-bidding su Freelancer.
+- **Upwork Sniper (`upwork_sniper.py`)**: Bot per intercettare feed RSS privati.
+- **Maps Lead Gen (`maps_lead_gen.py`)**: Estrazione dati (gratuita) per lead B2B.
 
----
+### 2. La Virtual Company (C-Suite AI)
+In `micro_llm_army.py` e `ai_council.py` risiede un'architettura ibrida per schede video da 6GB VRAM:
+- **C-Suite (GPU - Sequenziale):** Llama 3.1 (CEO), Qwen2.5-Coder (CTO), Gemma2 (CMO), Mistral (Head of Copy), Llava (Design). Vengono caricati e scaricati uno alla volta per non sforare i 6GB.
+- **Nano-Specialisti (CPU - Paralleli):** Modelli HuggingFace (FinBERT per la finanza, CodeBERTa per la sicurezza, traduttori multilingua) che girano leggeri in RAM per controllare il lavoro della C-Suite (Stress Test in Loop).
 
-## 🚀 Getting Started
+## 🚀 Come avviare tutto in Automatico (Il Demone)
 
-### 1. Prerequisites
-
-Ensure you have Python 3.9+ installed.
-
-### 2. Installation
-
-Clone the repository and install dependencies:
+Non devi avviare i file a mano uno per volta. Puoi semplicemente avviare il **Master Daemon**. Questo script girerà in background, pianificando automaticamente la ricerca di lavori e l'estrazione di contatti.
 
 ```bash
-git clone https://github.com/bytelifter/lazy-job.git
-cd lazy-job
-pip install -r requirements.txt
+# Avvia il sistema automatizzato
+python remote_job_hunter/master_daemon.py
 ```
 
-### 3. Usage
-
-Run the main pipeline:
-
-```bash
-python main.py
-```
-
-Follow the interactive prompts:
-1. Provide the path to your CV (e.g., `test_cv.txt` or `my_cv.pdf`).
-2. Review and confirm/modify detected skills.
-3. Select your target job area(s).
-4. Enter your location (e.g., `Italy`, `United States`, or `Worldwide`).
+### 🛑 Come Fermare il Sistema
+Il demone è progettato per essere interrotto in sicurezza. Se vuoi fermare tutto:
+- Clicca sulla finestra del terminale dove sta girando il demone.
+- Premi `Ctrl + C`. 
+Il demone riceverà il segnale, chiuderà i processi in modo sicuro e si spegnerà, lasciando un file di log dettagliato nella cartella `daemon_logs/` per permetterti di vedere tutto ciò che ha fatto in tua assenza.
 
 ---
 
-## ⚙️ Configuration
-
-All endpoints, keywords, sector definitions, salary thresholds, and geographic mappings are fully customizable in [`remote_job_hunter/config.json`](remote_job_hunter/config.json).
-
+## 🔒 Sicurezza e Privacy By Design
+Questo sistema ha delle direttive "Core" inviolabili codificate nel suo cervello (AI Council):
+1. **No pagamenti custom:** Qualsiasi progetto generato per un cliente o un SaaS userà SOLO processori verificati come Stripe. L'AI si rifiuterà di gestire carte di credito in modo nativo.
+2. **GDPR Pronto:** I siti generati includono sempre Cookie Banner e avvisi Privacy.
+3. **Budget Guard:** I sistemi API (es. Google Maps) contengono interruttori di emergenza che bloccano l'esecuzione appena Google rifiuta una connessione per limiti di budget, impedendo prelievi non autorizzati.
+  
 ---
 
-## 📄 License
-
-MIT License. Feel free to use and customize for your own job hunting automation!
+## 🚀 Recenti Aggiornamenti
+- **Gmail Scanner Lightning Fast**: Sostituita la lettura massiva `RFC822` con `UID SEARCH` e `BODY.PEEK`. Ricerca delle email limitata agli ultimi 2 giorni. Lo script ora gira in <5 secondi rispetto ai ~10 minuti precedenti.
+- **WhatsApp Scanner Resiliente**: Fixati i problemi di timeout. Il bot ora utilizza query molto più stabili (`#pane-side`, `#main`) su Playwright per assicurarsi che i box di chat siano interattivi.
+- **Disabilitato Filtro Contractor**: Per massimizzare le probabilità di successo, ora l'AI analizza ed estrae form anche per lavori di tipo dipendente/full-time remoti.
+- **Freelancer Sniper in Batch**: Incrementata la tolleranza fino a **300 gig analizzati a ciclo**. Il bot interromperà il ciclo solo alla prima Bid posizionata con successo per prevenire shadow-ban per spam.

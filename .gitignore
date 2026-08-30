@@ -31,3 +31,9 @@ personal_*
 *.swo
 .DS_Store
 Thumbs.db
+ 
+# Security and Credentials
+secrets/
+config.local.json
+*.token.json
+*.key

@@ -291,51 +291,11 @@ class JobMatcher:
 
     def _filter_contractor_only(self, offers: list[JobOffer]) -> list[JobOffer]:
         """
-        Mantiene solo le offerte aperte a contractor/freelance.
-
-        Verifica tramite:
-        1. Il campo job_type contro i valori contractor noti
-        2. Presenza di keyword contractor nel titolo o descrizione
-
-        Args:
-            offers: Lista di offerte pre-filtrate.
-
-        Returns:
-            Lista contenente solo offerte contractor/freelance.
+        [DISATTIVATO]
+        L'utente vuole prendere anche lavori non-contractor (es. full time)
+        per provare ad automatizzarli come se lavorasse in differita.
         """
-        result: list[JobOffer] = []
-
-        for offer in offers:
-            # Check 1: job_type diretto
-            job_type_lower = offer.job_type.lower()
-            type_match = any(
-                ct in job_type_lower for ct in self._contractor_types
-            )
-
-            if type_match:
-                result.append(offer)
-                continue
-
-            # Check 2: keyword nella descrizione e titolo
-            searchable = f"{offer.title} {offer.description[:3000]} {offer.location}".lower()
-            keyword_match = any(
-                kw in searchable for kw in self._contractor_kw
-            )
-
-            if keyword_match:
-                result.append(offer)
-                continue
-
-            # Check 3: Se abilitato allow_all_remote, include qualsiasi offerta remota/online per proporre candidatura contractor
-            if self._allow_all_remote:
-                if any(w in searchable for w in ("remote", "telecommute", "anywhere", "work from home", "smart working")):
-                    result.append(offer)
-                    continue
-                if offer.source in ("Indeed", "Linkedin", "Jobspy", "Remotive", "Himalayas", "WWR RSS"):
-                    result.append(offer)
-                    continue
-
-        return result
+        return offers
 
     def _score_and_rank(
         self,
